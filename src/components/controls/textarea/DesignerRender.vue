@@ -3,13 +3,17 @@ import NameIcon from "../../NameIcon.vue";
 let props = defineProps({
     control: Object
 })
+let emits = defineEmits(['selected']);
+function handleClick() {
 
+    emits("selected", props.control);
+}
 </script>
 
 <template>
-    <div class="w-full epdf-form-item-wrap">
+    <div @click="handleClick" class="w-full epdf-form-item-wrap">
         <ElFormItem :label-width="150" :label="control.props.label">
-            <el-input v-model="control.props.defaultValue" :placeholder="control.props.placeholder"></el-input>
+            <el-input type="textarea" v-model="control.props.defaultValue" :placeholder="control.props.placeholder"></el-input>
         </ElFormItem>
         <div class="opt">
             <el-icon>

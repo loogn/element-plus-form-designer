@@ -1,7 +1,7 @@
 import BaseControl from "../BaseControl";
 
-import Renderer from "./Renderer.vue";
-import PropEditor from "./PropEditor.vue";
+import DesignerRender from "./DesignerRender.vue";
+import PropEditor from "./PropsEditor.vue";
 import { markRaw } from 'vue';
 
 class Control extends BaseControl {
@@ -19,7 +19,7 @@ class Control extends BaseControl {
         };
         this.events = {};
         this.rules = [];
-        this._renderer = markRaw(Renderer);
+        this._designerRender = markRaw(DesignerRender);
         this._propEditor = markRaw(PropEditor);
     }
 }

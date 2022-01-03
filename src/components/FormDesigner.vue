@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, provide } from 'vue'
 import NameIcon from "./NameIcon.vue";
 import draggable from 'vuedraggable';
 import _ from "lodash";
@@ -11,23 +11,37 @@ let baseControls = [
 ];
 let data = reactive({
     controls: [],
+    activeControl: null,
+    propTab: "control",
+    rules: {},
+    formData: {},
 });
 
-defineProps({
-
+let props = defineProps({
+    gridCols: {
+        type: Number,
+        default: 12,
+    }
 })
+provide('formData', data.formData);
+provide('rules', data.rules);
+provide('fdprops', props);
 function clone(original) {
     var control = new original();
-
     return control;
 }
 function onChange(evt) {
-    // if (evt.added) {
-    //     clickHandle(evt.added.element)
-    //     //page.curCom = evt.added.element;
-    //     //page.curCom.isActive = true;
-    // }
-    console.log("---onChange---", evt);
+    let ctl = evt.added.element || evt.moved.element;
+    data.activeControl = ctl;
+    if (evt.added) {
+        data.activeControl = ctl;
+        data.formData[ctl.id] = ctl.props.defaultValue;
+    } else if (evt.moved) {
+        data.activeControl = ctl;
+    }
+}
+function handleSelect(control) {
+    data.activeControl = control;
 }
 
 const count = ref(0)
@@ -62,22 +76,43 @@ const count = ref(0)
             </draggable>
         </div>
         <div class="epdf-center-board">
-            <el-form class="h-full" label-position="right">
+            <el-form
+                class="h-full"
+                label-position="right"
+                :model="data.formData"
+                :rules="data.rules"
+            >
                 <draggable
                     :list="data.controls"
                     item-key="id"
-                    class="h-full flex flex-wrap overflow-y-auto content-start"
+                    class="min-h-full flex flex-wrap overflow-y-auto content-start"
                     @change="onChange"
                     :sort="true"
                     :group="{ name: 'com', pull: true, put: true }"
                 >
                     <template #item="{ element }">
-                        <component :is="element._renderer" :control="element" />
+                        <component
+                            @selected="handleSelect"
+                            :class="{ 'is-selected': data.activeControl == element }"
+                            :is="element._designerRender"
+                            :control="element"
+                        />
                     </template>
                 </draggable>
             </el-form>
         </div>
-        <div class="epdf-right-board"></div>
+        <div class="epdf-right-board">
+            <el-tabs v-model="data.propTab">
+                <el-tab-pane label="控件属性" name="control">
+                    <component
+                        v-if="data.activeControl"
+                        :is="data.activeControl._propEditor"
+                        :control="data.activeControl"
+                    />
+                </el-tab-pane>
+                <el-tab-pane label="表单属性" name="form">表单属性</el-tab-pane>
+            </el-tabs>
+        </div>
     </div>
 </template>
 
@@ -85,7 +120,7 @@ const count = ref(0)
 .epfd-container {
     @apply w-full h-full overflow-hidden flex font-mono;
     .epdf-left-board {
-        @apply bg-white box-border px-4 pt-6 flex-shrink-0;
+        @apply bg-white shadow box-border px-4 pt-6 flex-shrink-0;
         width: 260px;
         .epdf-com-title {
             @apply flex items-baseline;
@@ -124,15 +159,18 @@ const count = ref(0)
             &:hover,
             &.is-selected {
                 @apply bg-blue-100 border-blue-500 border-solid;
-                .opt{
+                .opt {
                     @apply flex;
                 }
             }
         }
+        li {
+            @apply list-none p-3 w-full;
+        }
     }
 
     .epdf-right-board {
-        @apply bg-white  box-border flex-shrink-0;
+        @apply bg-white shadow box-border flex-shrink-0 p-3 overflow-y-auto;
         width: 350px;
     }
 }

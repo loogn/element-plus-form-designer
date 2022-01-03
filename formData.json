@@ -1,0 +1,46 @@
+{
+    "controls": [
+        {
+            "type": "input",
+            "props": {
+                "width": "",
+                "defaultValue": "",
+                "required": false,
+                "requiredMessage": "",
+                "dataType": "",
+                "dataTypeCheck": false,
+                "dataTypeMessage": "",
+                "pattern": "",
+                "patternCheck": false,
+                "patternMessage": "",
+                "validatorCheck": false,
+                "validator": "",
+                "placeholder": "",
+                "customClass": "",
+                "disabled": false,
+                "labelWidth": 100,
+                "isLabelWidth": false,
+                "showPassword": false,
+            },
+            "events": {
+                "onChange": "",
+                "onFocus": "",
+                "onBlur": ""
+            },
+            "name": "单行文本",
+            "key": "muob1sae",
+            "id": "input_muob1sae",
+            "rules": []
+        }
+    ],
+    "props": {
+        "labelWidth": 100,
+        "labelPosition": "top",
+        "size": "small",
+        "customClass": "",
+        "layout": "horizontal",
+        "width": "100%",
+        "hideLabel": false,
+        "hideErrorMessage": false
+    }
+}
