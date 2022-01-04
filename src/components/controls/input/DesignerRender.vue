@@ -1,46 +1,29 @@
 <script setup>
-import { rule } from "postcss";
-import { inject, onMounted } from "vue";
-import NameIcon from "../../NameIcon.vue";
-let props = defineProps({
-    control: Object
+defineProps({
+    control: Object,
+    formProps: Object,
+    model: Object,
 })
-let emits = defineEmits(['selected']);
-function handleClick() {
-
-    emits("selected", props.control);
-}
-let fdprops = inject('fdprops');
-let rules = inject('rules');
-
-onMounted(() => {
-    rules[props.control.id] = [];
-
-});
 </script>
 
 <template>
-    <div
-        @click="handleClick"
-        class="w-1/3 epdf-form-item-wrap"
-        :style="{ 'width': (control.props.width * 100 / fdprops.gridCols) + '%' }"
+    <el-form-item
+        :class="control.props.customClass"
+        :prop="control.id"
+        :label-width="(control.props.labelWidth || formProps.labelWidth)"
+        :label="control.props.label"
+        :rules="control.rules"
     >
-        <ElFormItem :prop="control.props.id" :label-width="150" :label="control.props.label">
-            <el-input
-                :type="control.props.type"
-                :show-password="control.props.showPassword"
-                :show-word-limit="control.props.showWordLimit"
-                v-model="control.props.defaultValue"
-                :placeholder="control.props.placeholder"
-            ></el-input>
-        </ElFormItem>
-        <div class="opt">
-            <el-icon>
-                <NameIcon name="CopyDocument"></NameIcon>
-            </el-icon>
-            <el-icon>
-                <NameIcon name="Delete"></NameIcon>
-            </el-icon>
-        </div>
-    </div>
+        <el-input
+            :type="control.props.type"
+            :show-password="control.props.showPassword"
+            v-model="model[control.id]"
+            :placeholder="control.props.placeholder"
+            :clearable="control.props.clearable"
+            :disabled="control.props.disabled"
+            :readonly="control.props.readonly"
+            :show-word-limit="control.props.showWordLimit"
+            :maxlength="control.props.showWordLimit ? control.props.maxlength : undefined"
+        ></el-input>
+    </el-form-item>
 </template>

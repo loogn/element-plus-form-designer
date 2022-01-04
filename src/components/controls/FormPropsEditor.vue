@@ -1,65 +1,39 @@
 <script setup>
-import { inject } from "vue";
-import NameIcon from "../../NameIcon.vue";
-let props = defineProps({
-    control: Object
-})
-let fdprops = inject('fdprops');
 
+let props = defineProps({
+    formProps: Object
+})
 </script>
 
 <template>
     <el-form label-width="90px">
-        <el-form-item label="标题">
-            <el-input v-model="control.props.label" placeholder="请输入标题"></el-input>
-        </el-form-item>
-        <el-form-item label="展位提示">
-            <el-input v-model="control.props.placeholder" placeholder="请输入占位提示"></el-input>
-        </el-form-item>
-        <el-form-item label="默认值">
-            <el-input v-model="control.props.defaultValue" placeholder="请输入默认值"></el-input>
-        </el-form-item>
-
-        <el-form-item label="宽度">
-            <el-slider
-                class="w-11/12"
-                :min="0"
-                :max="fdprops.gridCols"
-                show-stops
-                v-model="control.props.width"
-            ></el-slider>
-        </el-form-item>
-        <el-form-item label="类型">
-            <el-select v-model="control.props.type">
-                <el-option value="text" label="文本"></el-option>
-                <el-option value="password" label="密码"></el-option>
+        <el-form-item label="标题位置">
+            <el-select v-model="formProps.labelPosition">
+                <el-option label="上方" value="top"></el-option>
+                <el-option label="靠左" value="left"></el-option>
+                <el-option label="靠右" value="right"></el-option>
             </el-select>
         </el-form-item>
-
-        <el-form-item label="显示密码" v-if="control.props.type == 'password'">
-            <el-switch v-model="control.props.showPassword"></el-switch>
+        <el-form-item label="标题宽度">
+            <el-input-number v-model="formProps.labelWidth" :step="5" :min="0" />
         </el-form-item>
 
-        <el-form-item label="字数统计" v-if="control.props.type == 'text'">
-            <el-switch v-model="control.props.showWordLimit"></el-switch>
+        <el-form-item label="表单尺寸">
+            <el-select v-model="formProps.size">
+                <el-option label="小" value="small"></el-option>
+                <el-option label="正常" value="default"></el-option>
+                <el-option label="大" value="large"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="栅格列数">
+            <el-slider class="w-11/12" :min="1" :max="24" show-stops v-model="formProps.cols"></el-slider>
         </el-form-item>
 
-        <el-form-item label="是否必填">
-            <el-switch v-model="control.props.required"></el-switch>
+        <el-form-item label="显示错误信息">
+            <el-switch v-model="formProps.showMessage"></el-switch>
         </el-form-item>
-        <el-form-item label="必填提示信息" v-if="control.props.required">
-            <el-input v-model="control.props.requiredMessage"></el-input>
+        <el-form-item label="自定义类">
+            <el-input v-model="formProps.customClass" placeholder="请输入自定义class"></el-input>
         </el-form-item>
-        <el-form-item label="是否可清空">
-            <el-switch v-model="control.props.clearable"></el-switch>
-        </el-form-item>
-        <el-form-item label="是否禁用">
-            <el-switch v-model="control.props.disabled"></el-switch>
-        </el-form-item>
-        <el-form-item label="是否只读">
-            <el-switch v-model="control.props.readonly"></el-switch>
-        </el-form-item>
-        <!-- required: false,
-        requiredMessage: '',-->
     </el-form>
 </template>

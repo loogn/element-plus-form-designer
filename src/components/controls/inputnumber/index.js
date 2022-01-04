@@ -6,29 +6,25 @@ import { markRaw } from 'vue';
 
 class Control extends BaseControl {
     constructor() {
-        super("input", "多行文本");
+        super("inputnumber", "数字框");
         this.props = {
             width: 12,
             labelWidth: undefined,
-            label: '多行文本',
-            defaultValue: '',
+            label: '数字框',
+            defaultValue: 0,
             placeholder: '',
-            required: false,
-            requiredMessage: '必填字段',
-            pattern: '',
-            patternMessage: '格式不正确',
             disabled: false,
-            readonly: false,
-            showWordLimit: false,
-            maxlength: 50,
-            rows: 3,
-            autosize: false,
+            min: 0,
+            max: 100,
+            step: 1,
+            stepStrictly: false,
+            precision: 0,
+            controls: true,
+            controlsPosition: '',
             customClass:'',
         };
         this.events = {};
-        this.rules = [
-            { message: '必填字段', required: false },
-            { pattern: undefined, message: '格式不正确' }];
+        this.rules = [];
         this._designerRender = markRaw(DesignerRender);
         this._propEditor = markRaw(PropEditor);
     }
@@ -36,6 +32,6 @@ class Control extends BaseControl {
         return new Control();
     }
 }
-Control.type = "text";
-Control.label = "多行文本";
+Control.type = "inputnumber";
+Control.label = "数字框";
 export default Control;

@@ -1,11 +1,23 @@
 <script setup>
-import { inject } from "vue";
-import NameIcon from "../../NameIcon.vue";
 let props = defineProps({
-    control: Object
+    control: Object,
+    formProps: Object,
 })
-let fdprops = inject('fdprops');
+function requiredChange(value) {
+    props.control.rules[0].required = value;
+}
+function requiredMessageChange(value) {
+    props.control.rules[0].message = value;
+}
+function patternChange(value) {
+    if (value) {
+        props.control.rules[1].pattern = eval(value);
+    }
+}
 
+function patternMessageChange(value) {
+    props.control.rules[1].message = value;
+}
 </script>
 
 <template>
@@ -13,7 +25,7 @@ let fdprops = inject('fdprops');
         <el-form-item label="标题">
             <el-input v-model="control.props.label" placeholder="请输入标题"></el-input>
         </el-form-item>
-        <el-form-item label="展位提示">
+        <el-form-item label="占位提示">
             <el-input v-model="control.props.placeholder" placeholder="请输入占位提示"></el-input>
         </el-form-item>
         <el-form-item label="默认值">
@@ -24,16 +36,16 @@ let fdprops = inject('fdprops');
             <el-slider
                 class="w-11/12"
                 :min="0"
-                :max="fdprops.gridCols"
+                :max="formProps.cols"
                 show-stops
                 v-model="control.props.width"
             ></el-slider>
         </el-form-item>
         <el-form-item label="类型">
-            <el-select v-model="control.props.type">
-                <el-option value="text" label="文本"></el-option>
-                <el-option value="password" label="密码"></el-option>
-            </el-select>
+            <el-radio-group v-model="control.props.type">
+                <el-radio-button label="text">文本</el-radio-button>
+                <el-radio-button label="password">密码</el-radio-button>
+            </el-radio-group>
         </el-form-item>
 
         <el-form-item label="显示密码" v-if="control.props.type == 'password'">
@@ -43,13 +55,27 @@ let fdprops = inject('fdprops');
         <el-form-item label="字数统计" v-if="control.props.type == 'text'">
             <el-switch v-model="control.props.showWordLimit"></el-switch>
         </el-form-item>
+        <el-form-item label="最大长度" v-if="control.props.showWordLimit">
+            <el-input-number v-model="control.props.maxlength" :min="1" />
+        </el-form-item>
+
+        <el-form-item label="标题宽度">
+            <el-input-number v-model="control.props.labelWidth" :min="0" />
+        </el-form-item>
 
         <el-form-item label="是否必填">
-            <el-switch v-model="control.props.required"></el-switch>
+            <el-switch @change="requiredChange" v-model="control.props.required"></el-switch>
         </el-form-item>
-        <el-form-item label="必填提示信息" v-if="control.props.required">
-            <el-input v-model="control.props.requiredMessage"></el-input>
+        <el-form-item label="必填提示" v-if="control.props.required">
+            <el-input @change="requiredMessageChange" v-model="control.props.requiredMessage"></el-input>
         </el-form-item>
+        <el-form-item label="正则验证">
+            <el-input @change="patternChange" v-model="control.props.pattern"></el-input>
+        </el-form-item>
+        <el-form-item label="正则提示" v-if="control.props.pattern">
+            <el-input @change="patternMessageChange" v-model="control.props.patternMessage"></el-input>
+        </el-form-item>
+
         <el-form-item label="是否可清空">
             <el-switch v-model="control.props.clearable"></el-switch>
         </el-form-item>
@@ -59,7 +85,8 @@ let fdprops = inject('fdprops');
         <el-form-item label="是否只读">
             <el-switch v-model="control.props.readonly"></el-switch>
         </el-form-item>
-        <!-- required: false,
-        requiredMessage: '',-->
+        <el-form-item label="自定义类">
+            <el-input v-model="control.props.customClass" placeholder="请输入自定义class"></el-input>
+        </el-form-item>
     </el-form>
 </template>

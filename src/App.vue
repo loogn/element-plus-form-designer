@@ -4,14 +4,14 @@ import FormDesigner from "./components/FormDesigner.vue";
 
 <template>
   <div class="h-full p-3">
-    <FormDesigner :gridCols="2"></FormDesigner>
+    <FormDesigner></FormDesigner>
   </div>
 </template>
 
 <style>
 #app {
   height: 100vh;
-  
+
   background-color: #eee;
 }
 </style>

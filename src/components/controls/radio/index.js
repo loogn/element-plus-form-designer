@@ -6,29 +6,25 @@ import { markRaw } from 'vue';
 
 class Control extends BaseControl {
     constructor() {
-        super("input", "多行文本");
+        super("radio", "单选框组");
         this.props = {
             width: 12,
             labelWidth: undefined,
-            label: '多行文本',
+            label: '单选框组',
             defaultValue: '',
-            placeholder: '',
             required: false,
             requiredMessage: '必填字段',
-            pattern: '',
-            patternMessage: '格式不正确',
             disabled: false,
-            readonly: false,
-            showWordLimit: false,
-            maxlength: 50,
-            rows: 3,
-            autosize: false,
-            customClass:'',
+            customClass: '',
+            showOptionLabel: true,
+            options: [
+                { label: '1', text: '选项1' },
+                { label: '2', text: '选项2' },
+                { label: '3', text: '选项3' },
+            ]
         };
         this.events = {};
-        this.rules = [
-            { message: '必填字段', required: false },
-            { pattern: undefined, message: '格式不正确' }];
+        this.rules = [{ message: '必填字段', required: false }];
         this._designerRender = markRaw(DesignerRender);
         this._propEditor = markRaw(PropEditor);
     }
@@ -36,6 +32,6 @@ class Control extends BaseControl {
         return new Control();
     }
 }
-Control.type = "text";
-Control.label = "多行文本";
+Control.type = "radio";
+Control.label = "单选框组";
 export default Control;

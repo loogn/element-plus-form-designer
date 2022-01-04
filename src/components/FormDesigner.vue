@@ -3,48 +3,97 @@ import { ref, reactive, provide } from 'vue'
 import NameIcon from "./NameIcon.vue";
 import draggable from 'vuedraggable';
 import _ from "lodash";
+import FormPropsEditor from './controls/FormPropsEditor.vue';
 import Input from "./controls/input";
 import Textarea from './controls/textarea';
-
+import InputNumber from './controls/inputnumber';
+import Radio from './controls/radio';
 let baseControls = [
-    Input, Textarea
+    Input, Textarea, InputNumber, Radio
 ];
-let data = reactive({
+//最终formjson数据
+let formData = reactive({
     controls: [],
+    props: {
+        labelPosition: "right",
+        labelWidth: 100,
+        size: "default",
+        showMessage: true,
+        customClass: "",
+        cols: 12,
+    }
+});
+let data = reactive({
     activeControl: null,
     propTab: "control",
-    rules: {},
-    formData: {},
+    model: {},
 });
-
+//组件的属性
 let props = defineProps({
-    gridCols: {
-        type: Number,
-        default: 12,
-    }
+
 })
-provide('formData', data.formData);
 provide('rules', data.rules);
-provide('fdprops', props);
-function clone(original) {
-    var control = new original();
+//添加控件
+function addControl(ctlType) {
+    var control = new ctlType();
+    data.model[control.id] = control.props.defaultValue;
+    formData.controls.push(control);
+    data.activeControl = control;
+}
+//克隆控件
+function clone(ctlType) {
+    var control = new ctlType();
+    data.model[control.id] = control.props.defaultValue;
     return control;
 }
+//拖动控件
 function onChange(evt) {
-    let ctl = evt.added.element || evt.moved.element;
-    data.activeControl = ctl;
+    console.log('改变', evt);
+    let control = (evt.added || evt.moved).element;
     if (evt.added) {
-        data.activeControl = ctl;
-        data.formData[ctl.id] = ctl.props.defaultValue;
+        data.activeControl = control;
     } else if (evt.moved) {
-        data.activeControl = ctl;
+        data.activeControl = control;
     }
 }
+//选中控件
 function handleSelect(control) {
     data.activeControl = control;
 }
+////删除控件
+function handleDelete(control) {
+    if (data.activeControl != null && control.id == data.activeControl.id) {
+        data.activeControl = null;
+    }
+    delete data.model[control.id];
+    _.remove(formData.controls, c => {
+        return c.id == control.id
+    });
+}
+//复制控件
+function handleCopy(control) {
+    let ctl = control.clone();
+    formData.controls.push(ctl);
+    data.model[ctl.id] = ctl.props.defaultValue;
+}
+//清空控件
+function clearControl() {
+    formData.controls.length = 0;
+    data.model = {};
+}
 
-const count = ref(0)
+let form = ref(null);
+
+
+function submit() {
+    console.log('--formdata-', formData);
+    console.log('--model-', data.model);
+
+    form.value.validate((valid, obj) => {
+        console.log('验证结果：', valid, obj);
+
+    })
+}
 </script>
 
 <template>
@@ -63,10 +112,11 @@ const count = ref(0)
                 tag="ul"
                 class="epdf-com-group"
                 :clone="clone"
+                :sort="false"
                 :group="{ name: 'com', pull: 'clone', put: false }"
             >
                 <template #item="{ element }">
-                    <li class="epdf-com-label">
+                    <li class="epdf-com-label" @click="addControl(element)">
                         <el-icon>
                             <NameIcon :name="element.type" />
                         </el-icon>
@@ -76,27 +126,49 @@ const count = ref(0)
             </draggable>
         </div>
         <div class="epdf-center-board">
+            <div class="epdf-toolbar">
+                <el-button type="text" @click="clearControl">清空</el-button>
+                <el-button type="primary" @click="submit">button</el-button>
+            </div>
             <el-form
-                class="h-full"
-                label-position="right"
-                :model="data.formData"
-                :rules="data.rules"
+                ref="form"
+                class="epdf-form"
+                :label-position="formData.props.labelPosition"
+                :label-width="formData.props.labelWidth"
+                :size="formData.props.size"
+                :class="formData.props.customClass"
+                :model="data.model"
             >
                 <draggable
-                    :list="data.controls"
+                    :list="formData.controls"
                     item-key="id"
-                    class="min-h-full flex flex-wrap overflow-y-auto content-start"
+                    class="flex flex-grow flex-wrap overflow-y-auto content-start"
                     @change="onChange"
                     :sort="true"
                     :group="{ name: 'com', pull: true, put: true }"
                 >
                     <template #item="{ element }">
-                        <component
-                            @selected="handleSelect"
+                        <div
+                            @click="handleSelect(element)"
+                            class="epdf-form-item-wrap"
                             :class="{ 'is-selected': data.activeControl == element }"
-                            :is="element._designerRender"
-                            :control="element"
-                        />
+                            :style="{ 'width': (element.props.width * 100 / formData.props.cols) + '%' }"
+                        >
+                            <component
+                                :is="element._designerRender"
+                                :control="element"
+                                :formProps="formData.props"
+                                :model="data.model"
+                            />
+                            <div class="opt">
+                                <el-icon @click.stop="handleCopy(element)">
+                                    <NameIcon name="CopyDocument"></NameIcon>
+                                </el-icon>
+                                <el-icon @click.stop="handleDelete(element)">
+                                    <NameIcon name="Delete"></NameIcon>
+                                </el-icon>
+                            </div>
+                        </div>
                     </template>
                 </draggable>
             </el-form>
@@ -104,13 +176,17 @@ const count = ref(0)
         <div class="epdf-right-board">
             <el-tabs v-model="data.propTab">
                 <el-tab-pane label="控件属性" name="control">
-                    <component
-                        v-if="data.activeControl"
-                        :is="data.activeControl._propEditor"
-                        :control="data.activeControl"
-                    />
+                    <template v-if="data.activeControl != null">
+                        <component
+                            :is="data.activeControl._propEditor"
+                            :control="data.activeControl"
+                            :formProps="formData.props"
+                        />
+                    </template>
                 </el-tab-pane>
-                <el-tab-pane label="表单属性" name="form">表单属性</el-tab-pane>
+                <el-tab-pane label="表单属性" name="form">
+                    <FormPropsEditor :formProps="formData.props" />
+                </el-tab-pane>
             </el-tabs>
         </div>
     </div>
@@ -144,15 +220,20 @@ const count = ref(0)
         }
     }
     .epdf-center-board {
-        @apply flex-grow p-2 bg-gray-300;
-        .el-form {
-            @apply bg-white;
+        @apply flex flex-col flex-grow;
+
+        .epdf-toolbar {
+            @apply border-b bg-white;
         }
+        .epdf-form {
+            @apply flex-1 flex flex-col min-h-full p-2 bg-gray-50 overflow-auto;
+        }
+
         .epdf-form-item-wrap {
             .opt {
                 @apply hidden absolute bg-blue-500 text-white z-10 top-0 right-0 p-2 space-x-2.5 items-center cursor-pointer;
             }
-            @apply relative border border-dashed box-border p-2 bg-blue-50 cursor-move;
+            @apply relative border border-dashed box-border p-2 pr-16 bg-blue-50 cursor-move;
             .el-form-item__label {
                 @apply cursor-move;
             }
@@ -165,7 +246,10 @@ const count = ref(0)
             }
         }
         li {
-            @apply list-none p-3 w-full;
+            @apply list-none justify-center text-blue-500 flex items-center px-20 py-5 border border-dashed w-full;
+            span {
+                @apply ml-1.5;
+            }
         }
     }
 

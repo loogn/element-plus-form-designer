@@ -4,7 +4,6 @@ defineProps({
     formProps: Object,
     model: Object,
 })
-
 </script>
 
 <template>
@@ -15,16 +14,18 @@ defineProps({
         :label="control.props.label"
         :rules="control.rules"
     >
-        <el-input
-            type="textarea"
-            :rows="control.props.rows"
-            :autosize="control.props.autosize"
+        <el-input-number
+            :type="control.props.type"
             v-model="model[control.id]"
             :placeholder="control.props.placeholder"
             :disabled="control.props.disabled"
-            :readonly="control.props.readonly"
-            :show-word-limit="control.props.showWordLimit"
-            :maxlength="control.props.showWordLimit ? control.props.maxlength : undefined"
-        ></el-input>
+            :min="control.props.min"
+            :max="control.props.max"
+            :step="control.props.step"
+            :step-strictly="control.props.stepStrictly"
+            :precision="control.props.precision"
+            :controls="control.props.controls"
+            :controlsPosition="control.props.controlsPosition"
+        ></el-input-number>
     </el-form-item>
 </template>

@@ -21,6 +21,11 @@
                 "labelWidth": 100,
                 "isLabelWidth": false,
                 "showPassword": false,
+                "options":[
+                    {"label":"1","text":"选项1"},
+                    {"label":"2","text":"选项2"},
+                    {"label":"3","text":"选项3"}
+                ]
             },
             "events": {
                 "onChange": "",
