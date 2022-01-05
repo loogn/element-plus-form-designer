@@ -12,10 +12,10 @@ function requiredMessageChange(value) {
     props.control.rules[0].message = value;
 }
 function addOption() {
-    props.control.props.options.push({ label: '', text: '' });
+    props.control.props.predefine.push({ value: '' });
 }
 function removeOption(index) {
-    props.control.props.options.splice(index, 1)
+    props.control.props.predefine.splice(index, 1)
 }
 </script>
 
@@ -40,6 +40,24 @@ function removeOption(index) {
         <el-form-item label="标题宽度">
             <el-input-number v-model="control.props.labelWidth" :min="0" />
         </el-form-item>
+        <el-form-item label="尺寸">
+            <el-radio-group v-model="control.props.size">
+                <el-radio-button label="small">小</el-radio-button>
+                <el-radio-button label="default">默认</el-radio-button>
+                <el-radio-button label="large">大</el-radio-button>
+            </el-radio-group>
+        </el-form-item>
+
+        <el-form-item label="支持透明度">
+            <el-switch @change="requiredChange" v-model="control.props.showAlpha"></el-switch>
+        </el-form-item>
+
+        <el-form-item label="默认值">
+            <el-color-picker
+                v-model="control.props.defaultValue"
+                :show-alpha="control.props.showAlpha"
+            />
+        </el-form-item>
 
         <el-form-item label="是否必填">
             <el-switch @change="requiredChange" v-model="control.props.required"></el-switch>
@@ -55,30 +73,26 @@ function removeOption(index) {
         <el-form-item label="自定义类">
             <el-input v-model="control.props.customClass" placeholder="请输入自定义class"></el-input>
         </el-form-item>
-        <el-divider>选项</el-divider>
-        <el-form-item label="自定义文本" class="mb-0 -mt-2">
-            <el-switch v-model="control.props.showOptionLabel"></el-switch>
-        </el-form-item>
+
+        <el-divider>预定义颜色</el-divider>
+
         <el-form-item label-width="0">
             <draggable
-                class="space-y-1 w-full"
+                class="grid grid-cols-3 w-full"
                 handle=".cursor-move"
-                :list="control.props.options"
+                :list="control.props.predefine"
                 item-key="index"
                 tag="div"
             >
                 <template #item="{ element, index }">
-                    <div class="flex items-center">
+                    <div class="inline-flex items-center">
                         <el-icon class="text-lg cursor-move">
                             <NameIcon name="rank" />
                         </el-icon>
-                        <el-input class="flex-grow" placeholder="选项值" v-model="element.label"></el-input>
-                        <el-input
-                            class="flex-grow"
-                            v-if="control.props.showOptionLabel"
-                            placeholder="显示文本"
-                            v-model="element.text"
-                        ></el-input>
+                        <el-color-picker
+                            v-model="element.value"
+                            :show-alpha="control.props.showAlpha"
+                        />
                         <el-icon
                             class="text-lg cursor-pointer text-red-500"
                             @click="removeOption(index)"
@@ -93,16 +107,6 @@ function removeOption(index) {
                     <NameIcon name="plus" />
                 </el-icon>添加
             </el-button>
-        </el-form-item>
-
-        <el-form-item label="默认值">
-            <el-select v-model="control.props.defaultValue" clearable placeholder="请输入默认值">
-                <el-option
-                    v-for="item in control.props.options"
-                    :label="control.props.showOptionLabel ? item.text : item.label"
-                    :value="item.label"
-                ></el-option>
-            </el-select>
         </el-form-item>
     </el-form>
 </template>

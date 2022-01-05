@@ -94,9 +94,8 @@ function removeOption(index) {
                 </el-icon>添加
             </el-button>
         </el-form-item>
-
         <el-form-item label="默认值">
-            <el-select v-model="control.props.defaultValue" clearable placeholder="请输入默认值">
+            <el-select v-model="control.props.defaultValue" multiple clearable placeholder="请输入默认值">
                 <el-option
                     v-for="item in control.props.options"
                     :label="control.props.showOptionLabel ? item.text : item.label"

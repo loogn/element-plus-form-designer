@@ -1,6 +1,6 @@
 import BaseControl from "../BaseControl";
 
-import DesignerRender from "./DesignerRender.vue";
+import Renderer from "./Renderer.vue";
 import PropEditor from "./PropsEditor.vue";
 import { markRaw } from 'vue';
 
@@ -9,6 +9,7 @@ class Control extends BaseControl {
         super("input", "多行文本");
         this.props = {
             width: 12,
+            showLabel:true,
             labelWidth: undefined,
             label: '多行文本',
             defaultValue: '',
@@ -29,7 +30,7 @@ class Control extends BaseControl {
         this.rules = [
             { message: '必填字段', required: false },
             { pattern: undefined, message: '格式不正确' }];
-        this._designerRender = markRaw(DesignerRender);
+        this._renderer = markRaw(Renderer);
         this._propEditor = markRaw(PropEditor);
     }
     clone() {

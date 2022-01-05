@@ -6,25 +6,25 @@ import { markRaw } from 'vue';
 
 class Control extends BaseControl {
     constructor() {
-        super("radio", "单选框组");
+        super("rate", "评分");
         this.props = {
             width: 12,
-            showLabel:true,
+            showLabel: true,
             labelWidth: undefined,
-            label: '单选框组',
-            defaultValue: '',
+            label: '单行文本',
+            defaultValue: 0,
             required: false,
-            requiredMessage: '必填字段',
+            requiredMessage: '请打分',
+            max: 5,
+            allowHalf: false,
+            showScore: false,
             disabled: false,
             customClass: '',
-            showOptionLabel: false,
-            options: [
-                { label: '值1', text: '选项1' },
-                { label: '值2', text: '选项2' }
-            ]
         };
         this.events = {};
-        this.rules = [{ message: '必填字段', required: false }];
+        this.rules = [{ message: '请打分', required: false, trigger: 'change' },
+        { type: 'number', min: 0, message: "请打分", trigger: 'change' }
+        ];
         this._renderer = markRaw(Renderer);
         this._propEditor = markRaw(PropEditor);
     }
@@ -32,6 +32,6 @@ class Control extends BaseControl {
         return new Control();
     }
 }
-Control.type = "radio";
-Control.label = "单选框组";
+Control.type = "rate";
+Control.label = "评分";
 export default Control;

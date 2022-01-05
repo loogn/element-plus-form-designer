@@ -4,13 +4,7 @@ import NameIcon from "./NameIcon.vue";
 import draggable from 'vuedraggable';
 import _ from "lodash";
 import FormPropsEditor from './controls/FormPropsEditor.vue';
-import Input from "./controls/input";
-import Textarea from './controls/textarea';
-import InputNumber from './controls/inputnumber';
-import Radio from './controls/radio';
-let baseControls = [
-    Input, Textarea, InputNumber, Radio
-];
+import { baseControls } from "./controls/controls";
 //最终formjson数据
 let formData = reactive({
     controls: [],
@@ -138,6 +132,7 @@ function submit() {
                 :size="formData.props.size"
                 :class="formData.props.customClass"
                 :model="data.model"
+                :status-icon="false"
             >
                 <draggable
                     :list="formData.controls"
@@ -154,12 +149,19 @@ function submit() {
                             :class="{ 'is-selected': data.activeControl == element }"
                             :style="{ 'width': (element.props.width * 100 / formData.props.cols) + '%' }"
                         >
-                            <component
-                                :is="element._designerRender"
-                                :control="element"
-                                :formProps="formData.props"
-                                :model="data.model"
-                            />
+                            <el-form-item
+                                :class="element.props.customClass"
+                                :prop="element.id"
+                                :label-width="element.props.showLabel ? (element.props.labelWidth || formData.props.labelWidth) : '0'"
+                                :label="element.props.showLabel ? element.props.label : ' '"
+                                :rules="element.rules"
+                            >
+                                <component
+                                    :is="element._renderer"
+                                    :control="element"
+                                    :model="data.model"
+                                />
+                            </el-form-item>
                             <div class="opt">
                                 <el-icon @click.stop="handleCopy(element)">
                                     <NameIcon name="CopyDocument"></NameIcon>
@@ -231,9 +233,9 @@ function submit() {
 
         .epdf-form-item-wrap {
             .opt {
-                @apply hidden absolute bg-blue-500 text-white z-10 top-0 right-0 p-2 space-x-2.5 items-center cursor-pointer;
+                @apply hidden absolute bg-blue-500 text-white z-10 bottom-0 right-0 p-2 space-x-2.5 items-center cursor-pointer;
             }
-            @apply relative border border-dashed box-border p-2 pr-16 bg-blue-50 cursor-move;
+            @apply relative border border-dashed box-border p-2 bg-blue-50 cursor-move;
             .el-form-item__label {
                 @apply cursor-move;
             }

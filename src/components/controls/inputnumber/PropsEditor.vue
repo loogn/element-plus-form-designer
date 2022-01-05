@@ -60,7 +60,9 @@ function requiredMessageChange(value) {
         <el-form-item label="严格步长" v-if="control.props.controls">
             <el-switch v-model="control.props.stepStrictly"></el-switch>
         </el-form-item>
-
+        <el-form-item label="显示标题">
+            <el-switch v-model="control.props.showLabel"></el-switch>
+        </el-form-item>
         <el-form-item label="标题宽度">
             <el-input-number v-model="control.props.labelWidth" :min="0" />
         </el-form-item>

@@ -6,13 +6,13 @@ import { markRaw } from 'vue';
 
 class Control extends BaseControl {
     constructor() {
-        super("radio", "单选框组");
+        super("checkbox", "多选框组");
         this.props = {
             width: 12,
-            showLabel:true,
+            showLabel: true,
             labelWidth: undefined,
-            label: '单选框组',
-            defaultValue: '',
+            label: '多选框组',
+            defaultValue: [],
             required: false,
             requiredMessage: '必填字段',
             disabled: false,
@@ -32,6 +32,6 @@ class Control extends BaseControl {
         return new Control();
     }
 }
-Control.type = "radio";
-Control.label = "单选框组";
+Control.type = "checkbox";
+Control.label = "多选框组";
 export default Control;

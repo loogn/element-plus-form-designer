@@ -24,6 +24,9 @@ function removeOption(index) {
         <el-form-item label="标题">
             <el-input v-model="control.props.label" placeholder="请输入标题"></el-input>
         </el-form-item>
+        <el-form-item label="占位提示">
+            <el-input v-model="control.props.placeholder" placeholder="请输入占位提示"></el-input>
+        </el-form-item>
 
         <el-form-item label="宽度">
             <el-slider
@@ -50,6 +53,15 @@ function removeOption(index) {
 
         <el-form-item label="是否禁用">
             <el-switch v-model="control.props.disabled"></el-switch>
+        </el-form-item>
+        <el-form-item label="是否可清空">
+            <el-switch v-model="control.props.clearable"></el-switch>
+        </el-form-item>
+        <el-form-item label="是否可筛选">
+            <el-switch v-model="control.props.filterable"></el-switch>
+        </el-form-item>
+        <el-form-item label="是否适应宽">
+            <el-switch v-model="control.props.fitInputWidth"></el-switch>
         </el-form-item>
 
         <el-form-item label="自定义类">
@@ -94,7 +106,6 @@ function removeOption(index) {
                 </el-icon>添加
             </el-button>
         </el-form-item>
-
         <el-form-item label="默认值">
             <el-select v-model="control.props.defaultValue" clearable placeholder="请输入默认值">
                 <el-option

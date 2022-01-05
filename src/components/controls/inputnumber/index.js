@@ -1,6 +1,6 @@
 import BaseControl from "../BaseControl";
 
-import DesignerRender from "./DesignerRender.vue";
+import Renderer from "./Renderer.vue";
 import PropEditor from "./PropsEditor.vue";
 import { markRaw } from 'vue';
 
@@ -9,6 +9,7 @@ class Control extends BaseControl {
         super("inputnumber", "数字框");
         this.props = {
             width: 12,
+            showLabel: true,
             labelWidth: undefined,
             label: '数字框',
             defaultValue: 0,
@@ -21,11 +22,11 @@ class Control extends BaseControl {
             precision: 0,
             controls: true,
             controlsPosition: '',
-            customClass:'',
+            customClass: '',
         };
         this.events = {};
         this.rules = [];
-        this._designerRender = markRaw(DesignerRender);
+        this._renderer = markRaw(Renderer);
         this._propEditor = markRaw(PropEditor);
     }
     clone() {
