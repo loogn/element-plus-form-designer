@@ -6,29 +6,25 @@ import { markRaw } from 'vue';
 
 class Control extends BaseControl {
     constructor() {
-        super("select", "下拉选择");
+        super("slider", "滑块");
         this.props = {
             width: 12,
             showLabel: true,
             labelWidth: undefined,
-            label: '下拉选择',
-            defaultValue: '',
-            placeholder: '请选择',
-            required: false,
-            requiredMessage: '必填字段',
+            label: '滑块',
+            defaultValue: 0,
             disabled: false,
-            clearable: true,
-            filterable: true,
+            required: false,
+            min: 0,
+            max: 100,
+            step: 1,
+            showInput: false,
+            showStops: false,
+            showTooltip: true,
             customClass: '',
-
-            showOptionLabel: false,
-            options: [
-                { label: '值1', text: '选项1' },
-                { label: '值2', text: '选项2' }
-            ]
         };
         this.events = {};
-        this.rules = [{ message: '必填字段', required: false }];
+        this.rules = [];
         this._renderer = markRaw(Renderer);
         this._propEditor = markRaw(PropEditor);
     }
@@ -36,6 +32,6 @@ class Control extends BaseControl {
         return new Control();
     }
 }
-Control.type = "select";
-Control.label = "下拉选择";
+Control.type = "slider";
+Control.label = "滑块";
 export default Control;

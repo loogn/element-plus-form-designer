@@ -4,7 +4,7 @@ import NameIcon from "./NameIcon.vue";
 import draggable from 'vuedraggable';
 import _ from "lodash";
 import FormPropsEditor from './controls/FormPropsEditor.vue';
-import { baseControls } from "./controls/controls";
+import groups from "./controls/controls";
 //最终formjson数据
 let formData = reactive({
     controls: [],
@@ -93,31 +93,33 @@ function submit() {
 <template>
     <div class="epfd-container">
         <div class="epdf-left-board">
-            <div class="epdf-com-title">
-                <el-icon>
-                    <NameIcon name="component" />
-                </el-icon>
-                <span>基础属性</span>
-            </div>
+            <div v-for="group in groups">
+                <div class="epdf-com-title">
+                    <el-icon>
+                        <NameIcon name="component" />
+                    </el-icon>
+                    <span>{{ group.name }}</span>
+                </div>
 
-            <draggable
-                :list="baseControls"
-                item-key="type"
-                tag="ul"
-                class="epdf-com-group"
-                :clone="clone"
-                :sort="false"
-                :group="{ name: 'com', pull: 'clone', put: false }"
-            >
-                <template #item="{ element }">
-                    <li class="epdf-com-label" @click="addControl(element)">
-                        <el-icon>
-                            <NameIcon :name="element.type" />
-                        </el-icon>
-                        <span>{{ element.label }}</span>
-                    </li>
-                </template>
-            </draggable>
+                <draggable
+                    :list="group.types"
+                    item-key="type"
+                    tag="ul"
+                    class="epdf-com-group"
+                    :clone="clone"
+                    :sort="false"
+                    :group="{ name: 'com', pull: 'clone', put: false }"
+                >
+                    <template #item="{ element }">
+                        <li class="epdf-com-label" @click="addControl(element)">
+                            <el-icon>
+                                <NameIcon :name="element.type" />
+                            </el-icon>
+                            <span>{{ element.label }}</span>
+                        </li>
+                    </template>
+                </draggable>
+            </div>
         </div>
         <div class="epdf-center-board">
             <div class="epdf-toolbar">
@@ -198,7 +200,7 @@ function submit() {
 .epfd-container {
     @apply w-full h-full overflow-hidden flex font-mono;
     .epdf-left-board {
-        @apply bg-white shadow box-border px-4 pt-6 flex-shrink-0;
+        @apply space-y-5 text-gray-600 text-sm bg-white shadow box-border px-4 pt-6 flex-shrink-0;
         width: 260px;
         .epdf-com-title {
             @apply flex items-baseline;

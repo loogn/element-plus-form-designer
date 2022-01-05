@@ -6,29 +6,27 @@ import { markRaw } from 'vue';
 
 class Control extends BaseControl {
     constructor() {
-        super("select", "下拉选择");
+        super("date", "日期选择器");
         this.props = {
             width: 12,
+            type: 'date', //year/month/date/datetime/week
             showLabel: true,
             labelWidth: undefined,
-            label: '下拉选择',
+            label: '日期选择器',
             defaultValue: '',
-            placeholder: '请选择',
+            placeholder: '',
             required: false,
             requiredMessage: '必填字段',
             disabled: false,
             clearable: true,
-            filterable: true,
+            readonly: false,
+            editable: true,
+            format: 'YYYY-MM-DD',
             customClass: '',
-
-            showOptionLabel: false,
-            options: [
-                { label: '值1', text: '选项1' },
-                { label: '值2', text: '选项2' }
-            ]
         };
         this.events = {};
-        this.rules = [{ message: '必填字段', required: false }];
+        this.rules = [
+            { message: '必填字段', required: false }];
         this._renderer = markRaw(Renderer);
         this._propEditor = markRaw(PropEditor);
     }
@@ -36,6 +34,6 @@ class Control extends BaseControl {
         return new Control();
     }
 }
-Control.type = "select";
-Control.label = "下拉选择";
+Control.type = "date";
+Control.label = "日期选择器";
 export default Control;
