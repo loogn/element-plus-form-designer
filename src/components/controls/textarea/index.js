@@ -6,7 +6,7 @@ import { markRaw } from 'vue';
 
 class Control extends BaseControl {
     constructor() {
-        super("input", "多行文本");
+        super("textarea", "多行文本");
         this.props = {
             width: 12,
             showLabel:true,
@@ -26,17 +26,14 @@ class Control extends BaseControl {
             autosize: false,
             customClass:'',
         };
-        this.events = {};
         this.rules = [
             { message: '必填字段', required: false },
             { pattern: undefined, message: '格式不正确' }];
-        this._renderer = markRaw(Renderer);
-        this._propEditor = markRaw(PropEditor);
     }
     clone() {
         return new Control();
     }
 }
-Control.type = "text";
+Control.type = "textarea";
 Control.label = "多行文本";
-export default Control;
+export default { Control, Renderer, PropEditor };

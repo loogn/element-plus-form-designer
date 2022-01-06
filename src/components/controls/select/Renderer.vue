@@ -15,8 +15,8 @@ defineProps({
     >
         <el-option
             v-for="item in control.props.options"
-            :value="item.label"
-            :label="control.props.showOptionLabel ? item.text || item.label : item.label"
+            :value="item.value"
+            :label="control.props.showOptionLabel ? item.label || item.value : item.value"
         ></el-option>
     </el-select>
 </template>

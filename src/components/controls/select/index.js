@@ -23,14 +23,11 @@ class Control extends BaseControl {
 
             showOptionLabel: false,
             options: [
-                { label: '值1', text: '选项1' },
-                { label: '值2', text: '选项2' }
+                { value: '值1', label: '选项1' },
+                { value: '值2', label: '选项2' }
             ]
         };
-        this.events = {};
         this.rules = [{ message: '必填字段', required: false }];
-        this._renderer = markRaw(Renderer);
-        this._propEditor = markRaw(PropEditor);
     }
     clone() {
         return new Control();
@@ -38,4 +35,4 @@ class Control extends BaseControl {
 }
 Control.type = "select";
 Control.label = "下拉选择";
-export default Control;
+export default { Control, Renderer, PropEditor };

@@ -10,7 +10,6 @@ defineProps({
         v-model="model[control.id]"
         :show-alpha="control.props.showAlpha"
         :disabled="control.props.disabled"
-        :size="control.props.size"
-        :predefine="control.props.predefine.map(x => x.value)"
+        :predefine="control.props.options.map(x => x.value)"
     />
 </template>

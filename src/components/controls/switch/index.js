@@ -24,8 +24,6 @@ class Control extends BaseControl {
         };
         this.events = {};
         this.rules = [{ required: false }];
-        this._renderer = markRaw(Renderer);
-        this._propEditor = markRaw(PropEditor);
     }
     clone() {
         return new Control();
@@ -33,4 +31,4 @@ class Control extends BaseControl {
 }
 Control.type = "switch";
 Control.label = "开关";
-export default Control;
+export default { Control, Renderer, PropEditor };

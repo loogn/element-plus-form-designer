@@ -26,8 +26,6 @@ class Control extends BaseControl {
         };
         this.events = {};
         this.rules = [];
-        this._renderer = markRaw(Renderer);
-        this._propEditor = markRaw(PropEditor);
     }
     clone() {
         return new Control();
@@ -35,4 +33,4 @@ class Control extends BaseControl {
 }
 Control.type = "inputnumber";
 Control.label = "数字框";
-export default Control;
+export default { Control, Renderer, PropEditor };

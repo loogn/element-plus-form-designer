@@ -12,10 +12,10 @@ function requiredMessageChange(value) {
     props.control.rules[0].message = value;
 }
 function addOption() {
-    props.control.props.predefine.push({ value: '' });
+    props.control.props.options.push({ value: '' });
 }
 function removeOption(index) {
-    props.control.props.predefine.splice(index, 1)
+    props.control.props.options.splice(index, 1)
 }
 </script>
 
@@ -40,13 +40,13 @@ function removeOption(index) {
         <el-form-item label="标题宽度">
             <el-input-number v-model="control.props.labelWidth" :min="0" />
         </el-form-item>
-        <el-form-item label="尺寸">
+        <!-- <el-form-item label="尺寸">
             <el-radio-group v-model="control.props.size">
                 <el-radio-button label="small">小</el-radio-button>
                 <el-radio-button label="default">默认</el-radio-button>
                 <el-radio-button label="large">大</el-radio-button>
             </el-radio-group>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item label="支持透明度">
             <el-switch @change="requiredChange" v-model="control.props.showAlpha"></el-switch>
@@ -80,14 +80,14 @@ function removeOption(index) {
             <draggable
                 class="grid grid-cols-3 w-full"
                 handle=".cursor-move"
-                :list="control.props.predefine"
+                :list="control.props.options"
                 item-key="index"
                 tag="div"
             >
                 <template #item="{ element, index }">
                     <div class="inline-flex items-center">
                         <el-icon class="text-lg cursor-move">
-                            <NameIcon name="rank" />
+                            <NameIcon name="move" />
                         </el-icon>
                         <el-color-picker
                             v-model="element.value"
@@ -97,7 +97,7 @@ function removeOption(index) {
                             class="text-lg cursor-pointer text-red-500"
                             @click="removeOption(index)"
                         >
-                            <NameIcon name="remove" />
+                            <NameIcon name="delete" />
                         </el-icon>
                     </div>
                 </template>

@@ -29,9 +29,6 @@ let props = defineProps({
             <el-slider class="w-11/12" :min="1" :max="24" show-stops v-model="formProps.cols"></el-slider>
         </el-form-item>
 
-        <el-form-item label="显示错误信息">
-            <el-switch v-model="formProps.showMessage"></el-switch>
-        </el-form-item>
         <el-form-item label="自定义类">
             <el-input v-model="formProps.customClass" placeholder="请输入自定义class"></el-input>
         </el-form-item>

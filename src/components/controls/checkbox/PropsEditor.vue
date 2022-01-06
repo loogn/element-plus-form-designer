@@ -12,7 +12,7 @@ function requiredMessageChange(value) {
     props.control.rules[0].message = value;
 }
 function addOption() {
-    props.control.props.options.push({ label: '', text: '' });
+    props.control.props.options.push({ label: '', value: '' });
 }
 function removeOption(index) {
     props.control.props.options.splice(index, 1)
@@ -70,20 +70,20 @@ function removeOption(index) {
                 <template #item="{ element, index }">
                     <div class="flex items-center">
                         <el-icon class="text-lg cursor-move">
-                            <NameIcon name="rank" />
+                            <NameIcon name="move" />
                         </el-icon>
-                        <el-input class="flex-grow" placeholder="选项值" v-model="element.label"></el-input>
+                        <el-input class="flex-grow" placeholder="选项值" v-model="element.value"></el-input>
                         <el-input
                             class="flex-grow"
                             v-if="control.props.showOptionLabel"
                             placeholder="显示文本"
-                            v-model="element.text"
+                            v-model="element.label"
                         ></el-input>
                         <el-icon
                             class="text-lg cursor-pointer text-red-500"
                             @click="removeOption(index)"
                         >
-                            <NameIcon name="remove" />
+                            <NameIcon name="delete" />
                         </el-icon>
                     </div>
                 </template>
@@ -98,8 +98,8 @@ function removeOption(index) {
             <el-select v-model="control.props.defaultValue" multiple clearable placeholder="请输入默认值">
                 <el-option
                     v-for="item in control.props.options"
-                    :label="control.props.showOptionLabel ? item.text : item.label"
-                    :value="item.label"
+                    :label="control.props.showOptionLabel ? item.label : item.value"
+                    :value="item.value"
                 ></el-option>
             </el-select>
         </el-form-item>

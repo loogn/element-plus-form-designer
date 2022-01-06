@@ -9,7 +9,7 @@ defineProps({
     <el-radio-group v-model="model[control.id]" :disabled="control.props.disabled">
         <el-radio
             v-for="item in control.props.options"
-            :label="item.label"
-        >{{ control.props.showOptionLabel ? item.text || item.label : item.label }}</el-radio>
+            :label="item.value"
+        >{{ control.props.showOptionLabel ? item.label || item.value : item.value }}</el-radio>
     </el-radio-group>
 </template>

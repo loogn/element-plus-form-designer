@@ -6,29 +6,21 @@ import { markRaw } from 'vue';
 
 class Control extends BaseControl {
     constructor() {
-        super("slider", "滑块");
+        super("text", "文本");
         this.props = {
             width: 12,
             showLabel: true,
             labelWidth: undefined,
-            label: '滑块',
-            defaultValue: 0,
-            disabled: false,
-            required: false,
-            min: 0,
-            max: 100,
-            step: 1,
-            showInput: false,
-            showStops: false,
-            showTooltip: true,
+            label: '文本',
+            content: '显示的文本',
             customClass: '',
         };
-        this.rules = [];
+        
     }
     clone() {
         return new Control();
     }
 }
-Control.type = "slider";
-Control.label = "滑块";
+Control.type = "text";
+Control.label = "文本";
 export default { Control, Renderer, PropEditor };

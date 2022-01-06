@@ -1,2 +1,3 @@
 import FormDesigner from './components/FormDesigner.vue';
-export { FormDesigner } 
+import FormRenderer from './components/FormRenderer.vue';
+export { FormDesigner, FormRenderer } 

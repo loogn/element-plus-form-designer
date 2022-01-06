@@ -3,7 +3,7 @@ import FormDesigner from "./components/FormDesigner.vue";
 </script>
 
 <template>
-  <div class="h-full p-3">
+  <div class="h-full">
     <FormDesigner></FormDesigner>
   </div>
 </template>
@@ -12,6 +12,6 @@ import FormDesigner from "./components/FormDesigner.vue";
 #app {
   height: 100vh;
 
-  background-color: #eee;
+  
 }
 </style>
