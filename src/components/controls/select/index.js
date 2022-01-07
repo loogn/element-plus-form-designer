@@ -1,8 +1,6 @@
 import BaseControl from "../BaseControl";
-
 import Renderer from "./Renderer.vue";
 import PropEditor from "./PropsEditor.vue";
-import { markRaw } from 'vue';
 
 class Control extends BaseControl {
     constructor() {
@@ -20,7 +18,6 @@ class Control extends BaseControl {
             clearable: true,
             filterable: true,
             customClass: '',
-
             showOptionLabel: false,
             options: [
                 { value: '值1', label: '选项1' },
@@ -28,9 +25,6 @@ class Control extends BaseControl {
             ]
         };
         this.rules = [{ message: '必填字段', required: false }];
-    }
-    clone() {
-        return new Control();
     }
 }
 Control.type = "select";

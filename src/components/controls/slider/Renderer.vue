@@ -7,7 +7,7 @@ defineProps({
 
 <template>
     <el-slider
-        style="width:99%"
+        style="margin:0 8px;width:100%"
         v-model="model[control.id]"
         :disabled="control.props.disabled"
         :min="control.props.min"

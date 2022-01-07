@@ -1,8 +1,6 @@
 import BaseControl from "../BaseControl";
-
 import Renderer from "./Renderer.vue";
 import PropEditor from "./PropsEditor.vue";
-import { markRaw } from 'vue';
 
 class Control extends BaseControl {
     constructor() {
@@ -15,9 +13,6 @@ class Control extends BaseControl {
             content: '<p><font color="#c24f4a">显示的文本</font></p>',
             customClass: '',
         };
-    }
-    clone() {
-        return new Control();
     }
 }
 Control.type = "html";

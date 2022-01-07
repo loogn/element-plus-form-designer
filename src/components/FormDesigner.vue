@@ -2,34 +2,48 @@
 import { ref, reactive, toRaw } from 'vue'
 import NameIcon from "./NameIcon.vue";
 import draggable from 'vuedraggable';
-import _ from "lodash";
 import FormPropsEditor from './controls/FormPropsEditor.vue';
 import { groups, types } from "./controls/controls";
-
+import { randomWord } from "./utils";
 //组件的属性
-let props = defineProps(reactive({
+let props = defineProps({
     formData: {
         type: Object,
-        default: {
-            controls: [],
-            props: {
-                labelPosition: "right",
-                labelWidth: 100,
-                size: "default",
-                customClass: "",
-                cols: 12,
-            }
-        }
+        required: true,
     }
-}));
+});
 
-//UI所需数据
+// UI所需数据
 let data = reactive({
     activeControl: null,
     propTab: "control",
     model: {},
-    device: "pc",
+    device: "pc"
 });
+
+
+let defaultFormProps = {
+    labelPosition: "right",
+    labelWidth: 100,
+    size: "default",
+    customClass: "",
+    cols: 12,
+};
+if (props.formData.controls == undefined) {
+    props.formData.controls = [];
+}
+
+props.formData.controls.forEach(control => {
+    if (control.props.defaultValue !== undefined)
+        data.model[control.id] = control.props.defaultValue;
+});
+
+if (props.formData.props == undefined) {
+    props.formData.props = defaultFormProps;
+} else {
+    props.formData.props = Object.assign(defaultFormProps, props.formData.props);
+}
+
 
 
 //#region 操作控件
@@ -45,15 +59,18 @@ function addControl(ctlType) {
 //克隆控件
 function clone(ctlType) {
     var control = new ctlType();
-    if (control.props.defaultValue !== undefined) data.model[control.id] = control.props.defaultValue;
+    if (control.props.defaultValue !== undefined)
+        data.model[control.id] = control.props.defaultValue;
     return control;
 }
 //复制控件
 function handleCopy(originControl) {
-    let control = originControl.clone();
-    if (control.props.defaultValue !== undefined) data.model[control.id] = control.props.defaultValue;
+    let control = JSON.parse(JSON.stringify(originControl));
+    control.id = randomWord(false, 9);
+    control.lock = false;
+    if (control.props.defaultValue !== undefined)
+        data.model[control.id] = JSON.parse(JSON.stringify(data.model[originControl.id]));
     props.formData.controls.push(control);
-
 }
 //拖动控件
 function onChange(evt) {
@@ -69,22 +86,29 @@ function onChange(evt) {
 function handleSelect(control) {
     data.activeControl = control;
 }
-////删除控件
-function handleDelete(control) {
+//删除控件
+function handleDelete(control, index) {
     if (data.activeControl != null && control.id == data.activeControl.id) {
         data.activeControl = null;
     }
     delete data.model[control.id];
-    _.remove(props.formData.controls, c => {
-        return c.id == control.id
-    });
+    props.formData.controls.splice(index, 1);
 }
 
 //清空控件
 function clearControl() {
-    props.formData.controls.length = 0;
-    data.model = {};
-    data.activeControl = null;
+
+    for (let i = props.formData.controls.length - 1; i >= 0; i--) {
+        let control = props.formData.controls[i];
+        if (!control.lock) {
+            props.formData.controls.splice(i, 1);
+            delete data.model[control.id];
+            if (control == data.activeControl) {
+                data.activeControl = null;
+            }
+        }
+    }
+
 }
 //#endregion
 
@@ -310,7 +334,7 @@ defineExpose({
                         :sort="true"
                         :group="{ name: 'com', pull: true, put: true }"
                     >
-                        <template #item="{ element }">
+                        <template #item="{ element, index }">
                             <div
                                 @click="handleSelect(element)"
                                 class="epdf-form-item-wrap"
@@ -334,7 +358,10 @@ defineExpose({
                                     <el-icon @click.stop="handleCopy(element)">
                                         <NameIcon name="copy"></NameIcon>
                                     </el-icon>
-                                    <el-icon @click.stop="handleDelete(element)">
+                                    <el-icon
+                                        v-if="!element.lock"
+                                        @click.stop="handleDelete(element, index)"
+                                    >
                                         <NameIcon name="delete"></NameIcon>
                                     </el-icon>
                                 </div>
@@ -346,14 +373,14 @@ defineExpose({
         </div>
         <div class="epdf-right-board">
             <el-tabs v-model="data.propTab">
-                <el-tab-pane label="控件属性" name="control">
-                    <template v-if="data.activeControl != null">
-                        <component
-                            :is="types[data.activeControl.type].PropEditor"
-                            :control="data.activeControl"
-                            :formProps="formData.props"
-                        />
-                    </template>
+                <el-tab-pane label="组件属性" name="control">
+                    <el-empty v-if="data.activeControl == null" description="请选择组件"></el-empty>
+                    <component
+                        v-else
+                        :is="types[data.activeControl.type].PropEditor"
+                        :control="data.activeControl"
+                        :formProps="formData.props"
+                    />
                 </el-tab-pane>
                 <el-tab-pane label="表单属性" name="form">
                     <FormPropsEditor :formProps="formData.props" />
@@ -424,7 +451,7 @@ defineExpose({
             }
         }
         .epdf-form-container {
-            @apply box-content p-3 flex-1 overflow-auto;
+            @apply box-border p-3 flex-1 overflow-auto;
         }
         .epdf-form {
             @apply flex flex-col min-h-full bg-white;

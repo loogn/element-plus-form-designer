@@ -8,6 +8,10 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/loogn/element-plus-form-designer"
+  },
   "module": "./dist/formdesigner.es.js",
   "main": "./dist/formdesigner.umd.js",
   "exports": {

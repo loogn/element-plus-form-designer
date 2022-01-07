@@ -1,5 +1,4 @@
 import BaseControl from "../BaseControl";
-
 import Renderer from "./Renderer.vue";
 import PropEditor from "./PropsEditor.vue";
 
@@ -23,11 +22,7 @@ class Control extends BaseControl {
             step: '00:30',
             customClass: '',
         };
-        this.rules = [
-            { message: '必填字段', required: false }];
-    }
-    clone() {
-        return new Control();
+        this.rules = [{ message: '必填字段', required: false }];
     }
 }
 Control.type = "time";

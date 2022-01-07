@@ -1,8 +1,6 @@
 import BaseControl from "../BaseControl";
-
 import Renderer from "./Renderer.vue";
 import PropEditor from "./PropsEditor.vue";
-import { markRaw } from 'vue';
 
 class Control extends BaseControl {
     constructor() {
@@ -23,12 +21,7 @@ class Control extends BaseControl {
                 { value: '值2', label: '选项2' }
             ]
         };
-        // this.events = {};
         this.rules = [{ message: '必填字段', required: false }];
-     
-    }
-    clone() {
-        return new Control();
     }
 }
 Control.type = "checkbox";
