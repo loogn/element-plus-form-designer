@@ -10,6 +10,13 @@ let props = defineProps({
     formData: {
         type: Object,
         required: true,
+    },
+    uploadOptions: {
+        type: Object,
+        default: {
+            action: '',
+            getHeaders: () => ({})
+        }
     }
 });
 
