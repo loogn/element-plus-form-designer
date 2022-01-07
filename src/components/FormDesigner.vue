@@ -17,7 +17,6 @@ let props = defineProps({
 let data = reactive({
     activeControl: null,
     propTab: "control",
-    model: {},
     device: "pc"
 });
 
@@ -29,14 +28,11 @@ let defaultFormProps = {
     customClass: "",
     cols: 12,
 };
+
 if (props.formData.controls == undefined) {
     props.formData.controls = [];
 }
 
-props.formData.controls.forEach(control => {
-    if (control.props.defaultValue !== undefined)
-        data.model[control.id] = control.props.defaultValue;
-});
 
 if (props.formData.props == undefined) {
     props.formData.props = defaultFormProps;
@@ -51,16 +47,12 @@ if (props.formData.props == undefined) {
 //添加控件
 function addControl(ctlType) {
     var control = new ctlType();
-    if (control.props.defaultValue !== undefined) data.model[control.id] = control.props.defaultValue;
     props.formData.controls.push(control);
-
     data.activeControl = control;
 }
 //克隆控件
 function clone(ctlType) {
     var control = new ctlType();
-    if (control.props.defaultValue !== undefined)
-        data.model[control.id] = control.props.defaultValue;
     return control;
 }
 //复制控件
@@ -68,8 +60,6 @@ function handleCopy(originControl) {
     let control = JSON.parse(JSON.stringify(originControl));
     control.id = randomWord(false, 9);
     control.lock = false;
-    if (control.props.defaultValue !== undefined)
-        data.model[control.id] = JSON.parse(JSON.stringify(data.model[originControl.id]));
     props.formData.controls.push(control);
 }
 //拖动控件
@@ -91,7 +81,6 @@ function handleDelete(control, index) {
     if (data.activeControl != null && control.id == data.activeControl.id) {
         data.activeControl = null;
     }
-    delete data.model[control.id];
     props.formData.controls.splice(index, 1);
 }
 
@@ -102,7 +91,6 @@ function clearControl() {
         let control = props.formData.controls[i];
         if (!control.lock) {
             props.formData.controls.splice(i, 1);
-            delete data.model[control.id];
             if (control == data.activeControl) {
                 data.activeControl = null;
             }
@@ -149,7 +137,12 @@ let previewData = reactive({
 })
 function previewFrom() {
     previewData.formData = toRaw(props.formData);
-    previewData.formModel = toRaw(data.model);
+    let formModel = {};
+    previewData.formData.controls.forEach(control => {
+        if (control.props.defaultValue !== undefined)
+            formModel[control.id] = control.props.defaultValue;
+    });
+    previewData.formModel = formModel;
     previewVisible.value = true;
 }
 function validate() {
@@ -323,8 +316,8 @@ defineExpose({
                     :label-width="formData.props.labelWidth"
                     :size="formData.props.size"
                     :class="[formData.props.customClass]"
-                    :model="data.model"
                     :status-icon="false"
+                    :show-message="false"
                 >
                     <draggable
                         :list="formData.controls"
@@ -351,7 +344,6 @@ defineExpose({
                                     <component
                                         :is="types[element.type].Renderer"
                                         :control="element"
-                                        :model="data.model"
                                     />
                                 </el-form-item>
                                 <div class="opt">
@@ -474,7 +466,7 @@ defineExpose({
             .opt {
                 @apply hidden absolute bg-blue-500 text-white z-10 bottom-0 right-0 p-2 space-x-2.5 items-center cursor-pointer;
             }
-            @apply relative border border-dashed box-border p-2  cursor-move;
+            @apply relative border border-dashed box-border overflow-hidden p-2  cursor-move;
             .el-form-item__label {
                 @apply cursor-move;
             }

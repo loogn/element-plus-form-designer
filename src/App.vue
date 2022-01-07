@@ -103,7 +103,7 @@ let formJson = `{
   }
 }`;
 let formData = JSON.parse(formJson);
-let data = reactive(formData);
+let data = reactive({});
 
 function showData() {
   console.log(data);
