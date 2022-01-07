@@ -11,7 +11,5 @@ import FormDesigner from "./components/FormDesigner.vue";
 <style>
 #app {
   height: 100vh;
-
-  
 }
 </style>

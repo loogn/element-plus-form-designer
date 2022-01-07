@@ -1,22 +1,27 @@
 <script setup>
-import { ref, reactive, toRaw, nextTick } from 'vue'
+import { ref, reactive, toRaw } from 'vue'
 import NameIcon from "./NameIcon.vue";
 import draggable from 'vuedraggable';
 import _ from "lodash";
 import FormPropsEditor from './controls/FormPropsEditor.vue';
 import { groups, types } from "./controls/controls";
 
-//最终formjson数据
-let formData = reactive({
-    controls: [],
-    props: {
-        labelPosition: "right",
-        labelWidth: 100,
-        size: "default",
-        customClass: "",
-        cols: 12,
+//组件的属性
+let props = defineProps(reactive({
+    formData: {
+        type: Object,
+        default: {
+            controls: [],
+            props: {
+                labelPosition: "right",
+                labelWidth: 100,
+                size: "default",
+                customClass: "",
+                cols: 12,
+            }
+        }
     }
-});
+}));
 
 //UI所需数据
 let data = reactive({
@@ -26,17 +31,15 @@ let data = reactive({
     device: "pc",
 });
 
-//组件的属性
-let props = defineProps({
-
-})
 
 //#region 操作控件
+
 //添加控件
 function addControl(ctlType) {
     var control = new ctlType();
     if (control.props.defaultValue !== undefined) data.model[control.id] = control.props.defaultValue;
-    formData.controls.push(control);
+    props.formData.controls.push(control);
+
     data.activeControl = control;
 }
 //克隆控件
@@ -46,10 +49,11 @@ function clone(ctlType) {
     return control;
 }
 //复制控件
-function handleCopy(control) {
-    let ctl = control.clone();
-    formData.controls.push(ctl);
-    if (control.props.defaultValue !== undefined) data.model[ctl.id] = ctl.props.defaultValue;
+function handleCopy(originControl) {
+    let control = originControl.clone();
+    if (control.props.defaultValue !== undefined) data.model[control.id] = control.props.defaultValue;
+    props.formData.controls.push(control);
+
 }
 //拖动控件
 function onChange(evt) {
@@ -71,80 +75,141 @@ function handleDelete(control) {
         data.activeControl = null;
     }
     delete data.model[control.id];
-    _.remove(formData.controls, c => {
+    _.remove(props.formData.controls, c => {
         return c.id == control.id
     });
 }
 
 //清空控件
 function clearControl() {
-    formData.controls.length = 0;
+    props.formData.controls.length = 0;
     data.model = {};
     data.activeControl = null;
 }
 //#endregion
 
-let form = ref(null);
-function submit() {
-    console.log('--formdata-', formData);
-    console.log('--model-', data.model);
 
-    form.value.validate((valid, obj) => {
-        console.log('验证结果：', valid, obj);
-
-    })
-}
-//#region 查看json
+//#region 查看formJson
 import { VAceEditor } from 'vue3-ace-editor';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-chrome';
-// 语法检测
+// 语法检测 如果是只读，就不需要语法检测了
 // import workerJsonUrl from 'ace-builds/src-noconflict/worker-json?url'; // For vite
 // ace.config.setModuleUrl('ace/mode/json_worker', workerJsonUrl);
 // :options="{ useWorker: true }"
-let dialogVisible = ref(false);
-
-let aceEditor = ref(null);
-let json = ref(null);
-function viewJson() {
-    json.value = getJson(true)
-    dialogVisible.value = true;
+let formJsonVisible = ref(false);
+let formJson = ref(null);
+function viewFormJson() {
+    formJson.value = getFormJson(true)
+    formJsonVisible.value = true;
 }
-//#endregion
-
-function getJson(format) {
-    let obj = toRaw(formData);
-
+function getFormJson(format) {
+    let obj = toRaw(props.formData);
     if (format) {
         return JSON.stringify(obj, null, 2);
     } else {
         return JSON.stringify(obj);
     }
 }
+//#endregion
+
+
+//#region 预览表单
+import FormRenderer from './FormRenderer.vue';
+import { ElMessage } from 'element-plus';
+let previewVisible = ref(false);
+let formRenderer = ref(null);
+let previewData = reactive({
+    formData: {},
+    formModel: {}
+})
+function previewFrom() {
+    previewData.formData = toRaw(props.formData);
+    previewData.formModel = toRaw(data.model);
+    previewVisible.value = true;
+}
+function validate() {
+    formRenderer.value.validate((valid) => {
+        if (valid) {
+            ElMessage.success('表单验证成功');
+        } else {
+            ElMessage.error('表单验证失败');
+        }
+
+    })
+}
+
+function resetFields() {
+    formRenderer.value.resetFields();
+}
+
+//预览查看model数据
+let modelJsonVisible = ref(false);
+let modelJson = ref(null);
+function viewModelJson() {
+    let obj = toRaw(previewData.formModel);
+    modelJson.value = JSON.stringify(obj, null, 2);
+    modelJsonVisible.value = true;
+}
+
+// #endregion
+
 
 defineExpose({
-    viewJson,
-    getJson,
+    getFormJson,
     clearControl,
 });
 
 </script>
 
 <template>
-    <el-dialog v-model="dialogVisible" title="查看JSON" width="600px">
+    <el-dialog v-model="formJsonVisible" title="表单结构JSON" width="600px">
         <VAceEditor
-            class="-my-8 border"
-            ref="aceEditor"
+            class="aceEditor"
             :readonly="true"
-            v-model:value="json"
+            v-model:value="formJson"
             lang="json"
             theme="chrome"
             style="height: 400px"
         />
         <template #footer>
             <span class="dialog-footer">
-                <el-button type="primary" @click="dialogVisible = false">关闭</el-button>
+                <el-button type="primary" @click="formJsonVisible = false">关闭</el-button>
             </span>
+        </template>
+    </el-dialog>
+
+    <el-dialog v-model="previewVisible" center fullscreen title="表单预览">
+        <div class="epdf-preview-container">
+            <FormRenderer
+                ref="formRenderer"
+                :formData="previewData.formData"
+                :formModel="previewData.formModel"
+            />
+
+            <el-dialog v-model="modelJsonVisible" title="表单数据JSON" width="600px">
+                <VAceEditor
+                    class="aceEditor"
+                    :readonly="true"
+                    v-model:value="modelJson"
+                    lang="json"
+                    theme="chrome"
+                    style="height: 400px"
+                />
+                <template #footer>
+                    <span class="dialog-footer">
+                        <el-button type="primary" @click="modelJsonVisible = false">关闭</el-button>
+                    </span>
+                </template>
+            </el-dialog>
+        </div>
+        <template #footer>
+            <div class="epdf-preview-footer">
+                <el-button type="primary" @click="viewModelJson">表单数据</el-button>
+                <el-button type="primary" @click="validate">验证表单</el-button>
+                <el-button type="primary" @click="resetFields">重置表单</el-button>
+                <el-button type="primary" @click="previewVisible = false">关闭</el-button>
+            </div>
         </template>
     </el-dialog>
 
@@ -180,7 +245,7 @@ defineExpose({
         </div>
         <div class="epdf-center-board">
             <div class="epdf-toolbar">
-                <div class="epdf-devices text-lg">
+                <div class="epdf-devices">
                     <el-icon
                         @click="data.device = device"
                         class="icon"
@@ -191,7 +256,7 @@ defineExpose({
                     </el-icon>
                 </div>
 
-                <div>
+                <div class="epdf-opts">
                     <el-popconfirm
                         confirmButtonText="是"
                         cancelButtonText="否"
@@ -199,13 +264,31 @@ defineExpose({
                         @confirm="clearControl"
                     >
                         <template #reference>
-                            <el-button type="text">清空</el-button>
+                            <el-button type="text" :disabled="formData.controls.length == 0">
+                                <el-icon>
+                                    <NameIcon name="clear" />
+                                </el-icon>
+                                <span>清空</span>
+                            </el-button>
                         </template>
                     </el-popconfirm>
-
-                    <el-button type="text" @click="clearControl">预览</el-button>
-                    <el-button type="text" @click="viewJson">查看JSON</el-button>
-                    <el-button type="text" @click="submit">提交？</el-button>
+                    <el-button type="text" @click="viewFormJson">
+                        <el-icon>
+                            <NameIcon name="json" />
+                        </el-icon>
+                        <span>查看JSON</span>
+                    </el-button>
+                    <el-button
+                        type="text"
+                        @click="previewFrom"
+                        :disabled="formData.controls.length == 0"
+                    >
+                        <el-icon>
+                            <NameIcon name="preview" />
+                        </el-icon>
+                        <span>预览</span>
+                    </el-button>
+                    <!-- <el-button type="text" @click="submit">提交？</el-button> -->
                 </div>
             </div>
             <div class="epdf-form-container" :class="[data.device]">
@@ -222,7 +305,7 @@ defineExpose({
                     <draggable
                         :list="formData.controls"
                         item-key="id"
-                        class="flex flex-grow flex-wrap overflow-y-auto content-start"
+                        class="epdf-form-draggable"
                         @change="onChange"
                         :sort="true"
                         :group="{ name: 'com', pull: true, put: true }"
@@ -242,7 +325,7 @@ defineExpose({
                                     :rules="element.rules"
                                 >
                                     <component
-                                        :is="types['$' + element.type].Renderer"
+                                        :is="types[element.type].Renderer"
                                         :control="element"
                                         :model="data.model"
                                     />
@@ -266,7 +349,7 @@ defineExpose({
                 <el-tab-pane label="控件属性" name="control">
                     <template v-if="data.activeControl != null">
                         <component
-                            :is="types['$' + data.activeControl.type].PropEditor"
+                            :is="types[data.activeControl.type].PropEditor"
                             :control="data.activeControl"
                             :formProps="formData.props"
                         />
@@ -280,7 +363,20 @@ defineExpose({
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.epdf-preview-container {
+    @apply px-3 py-6 w-1/2 -my-8 mx-auto items-center overflow-y-auto border shadow;
+    height: 650px;
+    min-width: 400px;
+}
+.epdf-preview-footer {
+    @apply text-center;
+}
+
+.aceEditor {
+    @apply -my-8 border;
+}
+
 .epfd-container {
     @apply w-full h-full overflow-hidden flex;
     background-color: #f7f7f7;
@@ -315,7 +411,7 @@ defineExpose({
             @apply border-b bg-white w-full px-3 py-1  flex justify-between items-center;
 
             .epdf-devices {
-                @apply flex items-center space-x-2;
+                @apply flex items-center space-x-2 text-lg;
                 .is-selected {
                     @apply bg-gray-200 text-blue-500;
                 }
@@ -323,18 +419,25 @@ defineExpose({
                     @apply w-7 h-7 p-0.5 rounded cursor-pointer;
                 }
             }
+            .epdf-opts {
+                @apply flex space-x-5;
+            }
         }
         .epdf-form-container {
-            @apply p-3 flex-1 overflow-auto;
+            @apply box-content p-3 flex-1 overflow-auto;
         }
         .epdf-form {
-            @apply box-border flex flex-col min-h-full bg-white;
+            @apply flex flex-col min-h-full bg-white;
+            .epdf-form-draggable {
+                @apply flex flex-grow flex-wrap overflow-y-auto content-start;
+            }
         }
         .epdf-form-container.pc {
             width: 100%;
         }
         .epdf-form-container.mobile {
-            width: 375px;
+            // width: 375px;
+            width: 414px;
         }
         .epdf-form-container.pad {
             width: 770px;
