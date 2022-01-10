@@ -108,12 +108,28 @@ let data = reactive({});
 function showData() {
   console.log(data);
 }
+let uploadOptions = {
+  action: 'http://localhost:8888/api/Common/UploadFile',
+  getHeaders: function () {
+    return { 'token': '123' };
+  },
+  getFileHook: (res, file) => {
+    if (res.success) {
+      return {
+        name: file.name,
+        url: res.result.url
+      };
+    } else {
+      return res.msg;
+    }
+  }
+}
 </script>
 
 <template>
   <el-button type="danger" class="absolute top-0 left-0 z-50" @click="showData">console</el-button>
   <div class="h-full">
-    <FormDesigner :formData="data"></FormDesigner>
+    <FormDesigner :uploadOptions="uploadOptions" :formData="data"></FormDesigner>
   </div>
 </template>
 

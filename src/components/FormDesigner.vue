@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, toRaw } from 'vue'
+import { ref, reactive, toRaw, provide } from 'vue'
 import NameIcon from "./NameIcon.vue";
 import draggable from 'vuedraggable';
 import FormPropsEditor from './controls/FormPropsEditor.vue';
@@ -15,11 +15,12 @@ let props = defineProps({
         type: Object,
         default: {
             action: '',
-            getHeaders: () => ({})
+            getHeaders: () => ({}),
+            getFileHook: (response, file) => ({ name: file, url: response.url })
         }
     }
 });
-
+provide('uploadOptions', props.uploadOptions);
 // UI所需数据
 let data = reactive({
     activeControl: null,

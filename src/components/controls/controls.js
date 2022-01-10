@@ -14,6 +14,8 @@ import text from './text';
 import html from './html';
 import link from './link';
 import divider from './divider';
+import upload from './upload';
+import uploadImage from './uploadImage';
 let types = {
     input,
     textarea,
@@ -31,6 +33,9 @@ let types = {
     html,
     link,
     divider,
+
+    upload,
+    uploadImage
 }
 
 let groups = [
@@ -55,8 +60,12 @@ let groups = [
         ]
     },
 
-    { name: '高级组件', types: [] },
-    { name: '其他组件', types: [] },
+    {
+        name: '高级组件', types: [
+            upload.Control,
+            uploadImage.Control
+        ]
+    }
 ];
 
 export {

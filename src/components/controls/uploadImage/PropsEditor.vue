@@ -17,9 +17,6 @@ function requiredMessageChange(value) {
         <el-form-item label="标题">
             <el-input v-model="control.props.label" clearable placeholder="请输入标题"></el-input>
         </el-form-item>
-        <el-form-item label="按钮文字">
-            <el-input v-model="control.props.buttonText" clearable placeholder="请输入上传按钮的文字"></el-input>
-        </el-form-item>
 
         <el-form-item label="宽度">
             <el-slider
@@ -47,9 +44,9 @@ function requiredMessageChange(value) {
         <el-form-item label="支持多选">
             <el-switch v-model="control.props.multiple"></el-switch>
         </el-form-item>
-        <el-form-item label="显示列表">
+        <!-- <el-form-item label="显示列表">
             <el-switch v-model="control.props.showFileList"></el-switch>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item label="文件数量">
             <el-input-number v-model="control.props.limit" :min="1" />

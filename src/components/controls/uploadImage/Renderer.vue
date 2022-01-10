@@ -9,7 +9,9 @@ let props = defineProps({
 let uploadOptions = inject('uploadOptions');
 let header = uploadOptions.getHeaders();
 let data = reactive({
-    fileList: []
+    fileList: [],
+    previewVisible: false,
+    previewUrl: "",
 })
 
 if (props.model) {
@@ -54,6 +56,10 @@ function beforeUpload(file) {
     }
     return true;
 }
+function handlePictureCardPreview(file) {
+    data.previewUrl = file.url;
+    data.previewVisible = true;
+}
 
 function filesToList(files) {
     if (files) {
@@ -73,6 +79,8 @@ function filesToList(files) {
 
 <template>
     <el-upload
+        class="avatar-uploader"
+        list-type="picture-card"
         :action="uploadOptions.action"
         :headers="header"
         :multiple="control.props.multiple"
@@ -85,18 +93,18 @@ function filesToList(files) {
         :on-success="handleUploadSuccess"
         :on-exceed="handleExceed"
         :before-upload="beforeUpload"
+        :on-preview="handlePictureCardPreview"
     >
-        <el-button
-            type="primary"
-            :disabled="control.props.disabled || control.props.limit <= data.fileList.length"
-        >
-            <el-icon>
-                <NameIcon name="upload" />
-            </el-icon>
-            <span>{{ control.props.buttonText }}</span>
-        </el-button>
+        <el-icon>
+            <NameIcon name="plus" v-if="control.props.limit > data.fileList.length" />
+            <NameIcon name="forbid" v-else />
+        </el-icon>
+
         <template v-if="control.props.tip" #tip>
             <div class="el-upload__tip">{{ control.props.tip }}</div>
         </template>
     </el-upload>
+    <el-dialog v-model="data.previewVisible">
+        <img :src="data.previewUrl" alt />
+    </el-dialog>
 </template>

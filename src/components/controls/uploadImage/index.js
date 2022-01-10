@@ -4,14 +4,13 @@ import PropEditor from "./PropsEditor.vue";
 
 class Control extends BaseControl {
     constructor() {
-        super("upload", "文件上传");
+        super("uploadImage", "图片上传");
         this.props = {
             width: 12,
             showLabel: true,
             labelWidth: undefined,
-            label: '文件上传',
-            defaultValue:'',
-            buttonText: '点击上传',
+            label: '图片上传',
+            defaultValue: '',
             sizeUnit: 'MB',
             size: 5,
             required: false,
@@ -19,15 +18,15 @@ class Control extends BaseControl {
             multiple: false,
             withCredentials: false,
             showFileList: true,
-            accept: '.jpeg,.jpg,.png',
+            accept: '.jpg,.png',
             limit: 2,
             disabled: false,
-            tip: '请上传文件',
+            tip: '',
             customClass: '',
         };
         this.rules = [{ message: '必填字段', required: false }];
     }
 }
-Control.type = "upload";
-Control.label = "文件上传";
+Control.type = "uploadImage";
+Control.label = "图片上传";
 export default { Control, Renderer, PropEditor };
