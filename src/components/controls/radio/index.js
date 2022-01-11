@@ -5,6 +5,7 @@ import PropEditor from "./PropsEditor.vue";
 class Control extends BaseControl {
     constructor() {
         super("radio", "单选框组");
+        this.valueType='string';
         this.props = {
             width: 12,
             showLabel: true,

@@ -5,6 +5,7 @@ import PropEditor from "./PropsEditor.vue";
 class Control extends BaseControl {
     constructor() {
         super("rate", "评分");
+        this.valueType='number';
         this.props = {
             width: 12,
             showLabel: true,

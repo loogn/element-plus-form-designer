@@ -474,7 +474,7 @@ defineExpose({
             .opt {
                 @apply hidden absolute bg-blue-500 text-white z-10 bottom-0 right-0 p-2 space-x-2.5 items-center cursor-pointer;
             }
-            @apply relative border border-dashed box-border overflow-hidden p-2  cursor-move;
+            @apply relative border border-dashed box-border  p-2  cursor-move;
             .el-form-item__label {
                 @apply cursor-move;
             }

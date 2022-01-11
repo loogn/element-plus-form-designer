@@ -5,6 +5,7 @@ import PropEditor from "./PropsEditor.vue";
 class Control extends BaseControl {
     constructor() {
         super("input", "单行文本");
+        this.valueType='string';
         this.props = {
             type: 'text',
             width: 12,

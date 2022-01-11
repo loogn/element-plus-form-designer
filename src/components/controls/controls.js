@@ -16,6 +16,9 @@ import link from './link';
 import divider from './divider';
 import upload from './upload';
 import uploadImage from './uploadImage';
+import editor from './editor';
+import region from './region';
+import cascader from './cascader';
 let types = {
     input,
     textarea,
@@ -35,7 +38,10 @@ let types = {
     divider,
 
     upload,
-    uploadImage
+    uploadImage,
+    editor,
+    region,
+    cascader
 }
 
 let groups = [
@@ -56,14 +62,17 @@ let groups = [
             text.Control,
             html.Control,
             link.Control,
-            divider.Control,
+            divider.Control
         ]
     },
 
     {
         name: '高级组件', types: [
             upload.Control,
-            uploadImage.Control
+            uploadImage.Control,
+            region.Control,
+            cascader.Control,
+            editor.Control,
         ]
     }
 ];

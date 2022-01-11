@@ -108,3 +108,16 @@ function filesToList(files) {
         <img :src="data.previewUrl" alt />
     </el-dialog>
 </template>
+
+<style scoped lang="scss">
+.avatar-uploader {
+    :deep(.el-upload-list__item),
+    :deep(.el-upload--picture-card) {
+        width: 100px;
+        height: 100px;
+    }
+    :deep(.el-upload--picture-card i) {
+        margin-top: 35px;
+    }
+}
+</style>

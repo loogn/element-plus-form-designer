@@ -113,10 +113,10 @@ let uploadOptions = {
   getHeaders: function () {
     return { 'token': '123' };
   },
-  getFileHook: (res, file) => {
+  getFileHook: (res) => {
     if (res.success) {
       return {
-        name: file.name,
+        name: res.result.url.substr(res.result.url.lastIndexOf('/') + 1),
         url: res.result.url
       };
     } else {

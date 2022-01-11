@@ -5,6 +5,7 @@ import PropEditor from "./PropsEditor.vue";
 class Control extends BaseControl {
     constructor() {
         super("switch", "开关");
+        this.valueType='bool';
         this.props = {
             width: 12,
             showLabel: true,

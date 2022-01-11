@@ -4,27 +4,32 @@ import PropEditor from "./PropsEditor.vue";
 
 class Control extends BaseControl {
     constructor() {
-        super("checkbox", "多选框组");
-        this.valueType='array';
+        super("region", "地区选择");
+        this.valueType = 'array';
         this.props = {
             width: 12,
             showLabel: true,
             labelWidth: undefined,
-            label: '多选框组',
+            label: '地区选择',
             defaultValue: [],
+            placeholder: '请选择地区',
             required: false,
             requiredMessage: '必填字段',
+            showAllLevels: true,
             disabled: false,
+            clearable: true,
+            filterable: true,
+            valueField: 'label',
+            expandTrigger: 'click',
+            multiple: false,
+            // checkStrictly: false,
+            emitPath: true,
             customClass: '',
             showOptionLabel: false,
-            options: [
-                { value: '值1', label: '选项1' },
-                { value: '值2', label: '选项2' }
-            ]
         };
         this.rules = [{ message: '必填字段', required: false }];
     }
 }
-Control.type = "checkbox";
-Control.label = "多选框组";
+Control.type = "region";
+Control.label = "地区选择";
 export default { Control, Renderer, PropEditor };

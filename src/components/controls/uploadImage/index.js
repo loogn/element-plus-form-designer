@@ -5,6 +5,7 @@ import PropEditor from "./PropsEditor.vue";
 class Control extends BaseControl {
     constructor() {
         super("uploadImage", "图片上传");
+        this.valueType='string';
         this.props = {
             width: 12,
             showLabel: true,
