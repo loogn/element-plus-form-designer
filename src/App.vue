@@ -26,7 +26,7 @@ let uploadOptions = {
 </script>
 
 <template>
-  <el-button type="danger" class="absolute top-0 left-0 z-50" @click="showData">console</el-button>
+  <!-- <el-button type="danger" class="absolute top-0 left-0 z-50" @click="showData">console</el-button> -->
   <div class="h-full">
     <FormDesigner :uploadOptions="uploadOptions" :formData="data"></FormDesigner>
   </div>

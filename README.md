@@ -8,6 +8,8 @@ FormDesigner 组件用于设计表单，FormRenderer 组件用于呈现表单组
 
 注：npm中有```element-plus-form-designer``` 包，但是不能使用，还没研究好如何正确发布到 npm ，有点尴尬。
 
+![Log in to view](https://gitee.com/loogn/element-plus-form-designer/raw/master/preview.png "preview.png")
+
 ## FormDesigner 使用
 
 setup代码： 
