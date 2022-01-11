@@ -5,6 +5,7 @@ let props = defineProps({
 })
 
 function onChange(value) {
+    console.log(value);
     if (value == null) {
         if (props.model) {
             props.model[props.control.id] = [];

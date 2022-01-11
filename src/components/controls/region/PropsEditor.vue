@@ -72,7 +72,7 @@ function requiredMessageChange(value) {
             <el-switch v-model="control.props.filterable"></el-switch>
         </el-form-item>
 
-        <el-form-item label="完整路径">
+        <el-form-item label="显示全路径">
             <el-switch v-model="control.props.showAllLevels"></el-switch>
         </el-form-item>
 
