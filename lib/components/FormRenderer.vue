@@ -1,3 +1,9 @@
+<script>
+import { defineComponent } from 'vue';
+export default defineComponent({
+    name: 'FormRenderer'
+});
+</script>
 <script setup>
 import { ref } from 'vue'
 import { types } from "./controls/controls";

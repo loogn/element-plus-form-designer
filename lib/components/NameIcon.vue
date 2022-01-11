@@ -1,8 +1,11 @@
-<script setup>
-defineProps({
-    name: String,
-})
+<script>
 
+export default {
+    name: 'FormRenderer',
+    props:{
+        name:String,
+    }
+}
 </script>
 
 <template>

@@ -16,7 +16,7 @@ FormDesigner 组件用于设计表单，FormRenderer 组件用于呈现表单组
 setup代码： 
 ```js
 import { reactive } from "vue";
-import FormDesigner from "./components/FormDesigner.vue";
+import FormDesigner from "../lib/components/FormDesigner.vue";
 
 let data = reactive({});
 
@@ -118,7 +118,7 @@ uploadOptions说明：
 
 setup js代码
 ```js
-import FormRenderer from './components/FormRenderer.vue';
+import FormRenderer from '../lib/components/FormRenderer.vue';
 import { reactive ,ref } from 'vue';
 let data = reactive({
     formData: {},

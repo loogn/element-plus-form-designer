@@ -2,7 +2,7 @@
 import { reactive } from "vue";
 
 import FormDesigner from "../lib/components/FormDesigner.vue";
-
+// console.log(FormDesigner.name);
 let data = reactive({});
 
 function showData() {

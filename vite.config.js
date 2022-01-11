@@ -7,18 +7,11 @@ import path from 'path';
 export default defineConfig({
   plugins: [vue()],
   build: {
+    sourcemap: true,
     lib: {
       entry: path.resolve(__dirname, 'lib/main.js'),
       name: 'formdesigner',
       fileName: (format) => `formdesigner.${format}.js`
     }
-    // rollupOptions: {
-    //   external: ['vue'],
-    //   output: {
-    //     globals: {
-    //       vue: 'Vue'
-    //     }
-    //   }
-    // }
   }
 })

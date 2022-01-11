@@ -1,3 +1,9 @@
+<script>
+import { defineComponent } from 'vue';
+export default defineComponent({
+    name: 'FormDesigner'
+});
+</script>
 <script setup>
 import { ref, reactive, toRaw, provide } from 'vue'
 import NameIcon from "./NameIcon.vue";
@@ -438,7 +444,7 @@ defineExpose({
             @apply border-b bg-white w-full px-3 py-1  flex justify-between items-center;
 
             .epdf-devices {
-                @apply flex items-center space-x-2 text-lg;
+                @apply flex items-center space-x-2 text-lg text-gray-600;;
                 .is-selected {
                     @apply bg-gray-200 text-blue-500;
                 }
