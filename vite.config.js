@@ -13,5 +13,8 @@ export default defineConfig({
       name: 'formdesigner',
       fileName: (format) => `formdesigner.${format}.js`
     }
+  },
+  resolve: {
+    dedupe: ['vue']
   }
 })

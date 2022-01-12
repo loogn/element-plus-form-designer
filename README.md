@@ -69,7 +69,7 @@ controls里每个元素大概是这样的格式，以 select 为例子：
       "key": "qFahSi153",
       "id": "select_qFahSi153",
       "lock": false,
-      "valueType": "string",
+      "dataType": "string",
       "props": {
         "width": 12,
         "showLabel": true,
