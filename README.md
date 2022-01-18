@@ -1,7 +1,7 @@
 # element-plus-form-designer
 # 基于 vue3 和 element-plus 的表单设计器.
 
-保函两个组件 FormDesigner 和 FormRenderer.
+包含两个组件 FormDesigner 和 FormRenderer.
 FormDesigner 组件用于设计表单，FormRenderer 组件用于呈现表单组件和获取表单提交数据。
 
 
