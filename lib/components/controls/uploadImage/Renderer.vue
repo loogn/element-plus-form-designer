@@ -24,7 +24,7 @@ function handleUploadSuccess(res, file, fileList) {
     if (fileInfo.url) {
         data.fileList.push(fileInfo);
         if (props.model) {
-            props.model[props.control.id] = data.fileList.map(x => x.url).join();
+            props.model[props.control.id] = data.fileList.map(x => x.url);
         }
     } else {
         ElMessage.error(fileInfo);
@@ -33,7 +33,7 @@ function handleUploadSuccess(res, file, fileList) {
 function handleRemove(file, fileList) {
     data.fileList = fileList;
     if (props.model) {
-        props.model[props.control.id] = data.fileList.map(x => x.url).join();
+        props.model[props.control.id] = data.fileList.map(x => x.url);
     }
 }
 function handleExceed(file, fileList) {
@@ -64,7 +64,7 @@ function handlePictureCardPreview(file) {
 function filesToList(files) {
     if (files) {
         // console.log(files);
-        return files.split(",").filter(x => x).map((x) => {
+        return files.filter(x => x).map((x) => {
             return {
                 name: x.substr(x.lastIndexOf('/') + 1),
                 url: x
