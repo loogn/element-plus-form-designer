@@ -150,7 +150,7 @@ let previewData = reactive({
     formModel: {}
 })
 function previewFrom() {
-    previewData.formData = toRaw(props.formData);
+    previewData.formData = JSON.parse(JSON.stringify(props.formData));
     let formModel = {};
     previewData.formData.controls.forEach(control => {
         if (control.props.defaultValue !== undefined)
@@ -210,7 +210,7 @@ defineExpose({
         </template>
     </el-dialog>
 
-    <el-dialog v-model="previewVisible" center fullscreen title="表单预览">
+    <el-dialog v-model="previewVisible" destroy-on-close center fullscreen title="表单预览">
         <div class="epdf-preview-container">
             <FormRenderer
                 ref="formRenderer"
@@ -444,7 +444,7 @@ defineExpose({
             @apply border-b bg-white w-full px-3 py-1  flex justify-between items-center;
 
             .epdf-devices {
-                @apply flex items-center space-x-2 text-lg text-gray-600;;
+                @apply flex items-center space-x-2 text-lg text-gray-600;
                 .is-selected {
                     @apply bg-gray-200 text-blue-500;
                 }
