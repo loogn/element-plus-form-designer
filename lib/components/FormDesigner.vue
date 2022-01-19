@@ -5,7 +5,7 @@ export default defineComponent({
 });
 </script>
 <script setup>
-import { ref, reactive, toRaw, provide } from 'vue'
+import { ref, reactive, provide } from 'vue'
 import NameIcon from "./NameIcon.vue";
 import draggable from 'vuedraggable';
 import FormPropsEditor from './controls/FormPropsEditor.vue';
@@ -130,11 +130,11 @@ function viewFormJson() {
     formJsonVisible.value = true;
 }
 function getFormJson(format) {
-    let obj = toRaw(props.formData);
+    
     if (format) {
-        return JSON.stringify(obj, null, 2);
+        return JSON.stringify(props.formData, null, 2);
     } else {
-        return JSON.stringify(obj);
+        return JSON.stringify(props.formData);
     }
 }
 //#endregion
@@ -178,8 +178,7 @@ function resetFields() {
 let modelJsonVisible = ref(false);
 let modelJson = ref(null);
 function viewModelJson() {
-    let obj = toRaw(previewData.formModel);
-    modelJson.value = JSON.stringify(obj, null, 2);
+    modelJson.value = JSON.stringify(previewData.formModel, null, 2);
     modelJsonVisible.value = true;
 }
 
