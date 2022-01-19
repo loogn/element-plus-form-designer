@@ -37,8 +37,7 @@ function appendRoot() {
 }
 
 function remove(node, data) {
-    const parent = node.parent
-    console.log(node);
+    const parent = node.parent;
     const children = parent.data.children || parent.data
     const index = children.findIndex((d) => d.value === data.value)
     children.splice(index, 1)
