@@ -13,25 +13,39 @@ function requiredMessageChange(value) {
 }
 
 
-//#region 查看formJson
-import { VAceEditor } from 'vue3-ace-editor';
-import 'ace-builds/src-noconflict/mode-json';
-import 'ace-builds/src-noconflict/theme-chrome';
-// 语法检测 如果是只读，就不需要语法检测了
-import workerJsonUrl from 'ace-builds/src-noconflict/worker-json?url'; // For vite
-import { ElMessage } from 'element-plus';
-ace.config.setModuleUrl('ace/mode/json_worker', workerJsonUrl);
+//#region 编辑选项
 
 let formJsonVisible = ref(false);
-let formJson = ref(null);
-let aceEditor = ref(null);
+let treeData = ref(null);
 function viewFormJson() {
-    formJson.value = JSON.stringify(toRaw(props.control.props.options), null, 2);
+    treeData.value = JSON.parse(JSON.stringify(props.control.props.options));
     formJsonVisible.value = true;
+}
+let id = 1;
+function append(data) {
+    if (data == null)
+        data = treeData.value;
+    const newChild = { value: '新节点' + id++, $edit: true }
+    if (!data.children) {
+        data.children = []
+    }
+    data.children.push(newChild)
+}
+function appendRoot() {
+    const newChild = { value: '新节点' + id++, $edit: true }
+    treeData.value.push(newChild);
+}
+
+function remove(node, data) {
+    const parent = node.parent
+    console.log(node);
+    const children = parent.data.children || parent.data
+    const index = children.findIndex((d) => d.value === data.value)
+    children.splice(index, 1)
 }
 function Sure() {
     try {
-        props.control.props.options = JSON.parse(formJson.value);
+        props.control.props.options = JSON.parse(JSON.stringify(treeData.value, ['value', 'children']));
         formJsonVisible.value = false;
     }
     catch (e) {
@@ -39,20 +53,35 @@ function Sure() {
     }
 }
 //#endregion
-
+function onOver(e) {
+    e.target.focus();
+}
 </script>
 
 <template>
     <el-dialog center v-model="formJsonVisible" title="编辑选项" width="600px">
-        <VAceEditor
-            ref="aceEditor"
-            class="aceEditor"
-            v-model:value="formJson"
-            lang="json"
-            theme="chrome"
-            style="height: 400px"
-            :options="{ useWorker: true }"
-        />
+        <el-tree :data="treeData" default-expand-all :expand-on-click-node="false">
+            <template #default="{ node, data }">
+                <span class="custom-tree-node">
+                    <span style="flex-grow: 1; margin-right: 15px;" @click="node.data.$edit = true">
+                        <el-input
+                            size="small"
+                            v-if="node.data.$edit"
+                            @blur="node.data.$edit = false"
+                            v-model="node.data.value"
+                            @mouseover="onOver"
+                            placeholder
+                        />
+                        <span v-else>{{ node.data.value }}</span>
+                    </span>
+                    <span>
+                        <el-button type="text" @click="append(data)">添加</el-button>
+                        <el-button type="text" @click="remove(node, data)">删除</el-button>
+                    </span>
+                </span>
+            </template>
+        </el-tree>
+        <el-button type="text" @click="appendRoot">添加根节点</el-button>
         <template #footer>
             <span class="dialog-footer">
                 <el-button type="primary" @click="Sure">确定</el-button>
@@ -146,5 +175,12 @@ function Sure() {
 <style scoped lang="scss">
 .aceEditor {
     @apply -my-8 border;
+}
+.custom-tree-node {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
 }
 </style>
