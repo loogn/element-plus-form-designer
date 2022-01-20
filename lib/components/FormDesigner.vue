@@ -130,7 +130,7 @@ function viewFormJson() {
     formJsonVisible.value = true;
 }
 function getFormJson(format) {
-    
+
     if (format) {
         return JSON.stringify(props.formData, null, 2);
     } else {
@@ -143,6 +143,7 @@ function getFormJson(format) {
 //#region 预览表单
 import FormRenderer from './FormRenderer.vue';
 import { ElMessage } from 'element-plus';
+import FormViewer from './FormViewer.vue';
 let previewVisible = ref(false);
 let formRenderer = ref(null);
 let previewData = reactive({
@@ -176,10 +177,14 @@ function resetFields() {
 
 //预览查看model数据
 let modelJsonVisible = ref(false);
+let modelDescVisible = ref(false);
 let modelJson = ref(null);
 function viewModelJson() {
     modelJson.value = JSON.stringify(previewData.formModel, null, 2);
     modelJsonVisible.value = true;
+}
+function viewModelDesc() {
+    modelDescVisible.value = true;
 }
 
 // #endregion
@@ -217,7 +222,7 @@ defineExpose({
                 :formModel="previewData.formModel"
             />
 
-            <el-dialog v-model="modelJsonVisible" title="表单数据JSON" width="600px">
+            <el-dialog v-model="modelJsonVisible" destroy-on-close title="表单数据JSON" width="600px">
                 <VAceEditor
                     class="aceEditor"
                     :readonly="true"
@@ -232,10 +237,25 @@ defineExpose({
                     </span>
                 </template>
             </el-dialog>
+
+            <el-dialog v-model="modelDescVisible" destroy-on-close title="表单数据展示" width="600px">
+                <div style="height: 400px; overflow-y: auto;">
+                    <FormViewer
+                        :formData="previewData.formData"
+                        :formModel="previewData.formModel"
+                    />
+                </div>
+                <template #footer>
+                    <span class="dialog-footer">
+                        <el-button type="primary" @click="modelDescVisible = false">关闭</el-button>
+                    </span>
+                </template>
+            </el-dialog>
         </div>
         <template #footer>
             <div class="epdf-preview-footer">
                 <el-button type="primary" @click="viewModelJson">表单数据</el-button>
+                <el-button type="primary" @click="viewModelDesc">表单查看</el-button>
                 <el-button type="primary" @click="validate">验证表单</el-button>
                 <el-button type="primary" @click="resetFields">重置表单</el-button>
                 <el-button type="primary" @click="previewVisible = false">关闭</el-button>

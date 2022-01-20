@@ -1,9 +1,10 @@
 <script setup>
 defineProps({
     control: Object,
+    model: Object,
 })
 </script>
 
 <template>
-    <div v-html="control.props.content"></div>
+    <div>{{ model[control.id] }} </div>
 </template>

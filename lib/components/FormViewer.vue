@@ -1,0 +1,72 @@
+<script>
+import { defineComponent } from 'vue';
+export default defineComponent({
+    name: 'FormViewer'
+});
+</script>
+<script setup>
+import { ref } from 'vue'
+import { types } from "./controls/controls";
+
+//组件的属性
+defineProps({
+    formData: {
+        type: Object,
+        default: {
+            controls: [],
+            props: {
+                labelPosition: "right",
+                labelWidth: 100,
+                size: "default",
+                customClass: "",
+                cols: 12,
+            }
+        },
+        required: true,
+    },
+    formModel: {
+        type: Object,
+        default: {},
+        required: true,
+    },
+
+})
+
+
+</script>
+
+<template>
+    <el-form
+        ref="form"
+        class="epdf-form-renderer"
+        :label-position="formData.props.labelPosition"
+        :label-width="formData.props.labelWidth"
+        :size="formData.props.size"
+        :class="[formData.props.customClass]"
+        :model="formModel"
+        :status-icon="false"
+    >
+        <div
+            v-for="(element,index) in formData.controls"
+            :key="index"
+            class="epdf-form-item-wrap"
+            :style="{ 'width': (element.props.width * 100 / formData.props.cols) + '%' }"
+        >
+            <el-form-item
+                :class="element.props.customClass"
+                :prop="element.id"
+                :label-width="element.props.showLabel ? (element.props.labelWidth || formData.props.labelWidth) : '0'"
+                :label="element.props.showLabel ? element.props.label : ' '"
+                :rules="element.rules"
+            >
+                <component :is="types[element.type].Viewer" :control="element" :model="formModel" />
+            </el-form-item>
+        </div>
+    </el-form>
+</template>
+
+<style lang="scss" scoped>
+.epdf-form-renderer {
+    @apply flex flex-wrap overflow-y-auto content-start;
+}
+</style>

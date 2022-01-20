@@ -6,9 +6,6 @@ let props = defineProps({
     control: Object,
     model: Object,
 })
-let data = reactive({
-    list: []
-})
 
 //默认行数
 
@@ -65,7 +62,7 @@ function copyRow(scp) {
 <template>
     <el-table
         empty-text="请添加数据"
-        :data="thisModel"
+        :data="props.model[props.control.id]"
         :stripe="control.props.stripe"
         :border="control.props.border"
         :max-height="control.props.maxHeight"
@@ -77,36 +74,8 @@ function copyRow(scp) {
             v-for="(col,index) in control.props.columns"
         >
             <template #default="scope">
-                <el-input
-                    :disabled="control.props.disabled"
-                    v-model="scope.row[col.name]"
-                    placeholder
-                ></el-input>
-            </template>
-        </el-table-column>
-        <el-table-column
-            v-if="control.props.cloneable || control.props.deleteable"
-            label="操作"
-            fixed="right"
-            width="120"
-        >
-            <template #default="scope">
-                <el-button
-                    v-if="control.props.cloneable"
-                    :disabled="control.props.disabled"
-                    @click="copyRow(scope)"
-                    type="text"
-                >复制</el-button>
-                <el-button
-                    v-if="control.props.deleteable"
-                    :disabled="control.props.disabled"
-                    @click="delRow(scope)"
-                    type="text"
-                >删除</el-button>
+                <span>{{ scope.row[col.name] }}</span>
             </template>
         </el-table-column>
     </el-table>
-    <div v-if="control.props.addable">
-        <el-button type="text" :disabled="control.props.disabled" @click="addRow">添加</el-button>
-    </div>
 </template>
