@@ -3,11 +3,10 @@ defineProps({
     control: Object,
     model: Object,
 })
-
 </script>
 
 <template>
-    <div>
+    <div class="filewraper">
         <el-image
             :preview-src-list="model[control.id]"
             :initial-index="index"
@@ -17,3 +16,9 @@ defineProps({
         ></el-image>
     </div>
 </template>
+
+<style scoped lang="scss">
+.filewraper {
+    @apply space-x-2;
+}
+</style>

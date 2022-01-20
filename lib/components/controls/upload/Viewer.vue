@@ -4,7 +4,6 @@ let props= defineProps({
     model: Object,
 })
 
-
 function filesToList(files) {
     if (files) {
         return files.filter(x => x).map((x) => {
@@ -20,7 +19,12 @@ let fileList = filesToList(props.model[props.control.id]);
 </script>
 
 <template>
-    <div>
-        <el-link v-for="item in fileList" :href="item.url" target="_blank">{{ item.name }}</el-link>
+    <div class="filewraper">
+        <el-link v-for="item in fileList" type="primary" :href="item.url" target="_blank">{{ item.name }}</el-link>
     </div>
 </template>
+<style scoped lang="scss">
+.filewraper{
+    @apply space-x-2;
+}
+</style>
