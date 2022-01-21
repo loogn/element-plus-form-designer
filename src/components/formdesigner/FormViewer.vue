@@ -1,11 +1,4 @@
-<script>
-import { defineComponent } from 'vue';
-export default defineComponent({
-    name: 'FormRenderer'
-});
-</script>
 <script setup>
-import { ref } from 'vue'
 import { types } from "./controls/controls";
 
 //组件的属性
@@ -32,27 +25,6 @@ defineProps({
 
 })
 
-let form = ref(null);
-//验证，回调传入是否验证成功
-function validate(callback) {
-    form.value.validate(callback);
-}
-function resetFields() {
-    form.value.resetFields();
-}
-function clearValidate(ps) {
-    form.value.clearValidate(ps);
-}
-function scrollToField(prop) {
-    form.value.scrollToField(prop)
-}
-
-defineExpose({
-    validate,
-    resetFields,
-    scrollToField,
-    clearValidate
-});
 
 </script>
 
@@ -80,11 +52,7 @@ defineExpose({
                 :label="element.props.showLabel ? element.props.label : ' '"
                 :rules="element.rules"
             >
-                <component
-                    :is="types[element.type].Renderer"
-                    :control="element"
-                    :model="formModel"
-                />
+                <component :is="types[element.type].Viewer" :control="element" :model="formModel" />
             </el-form-item>
         </div>
     </el-form>

@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from "vue";
 
-import FormDesigner from "../lib/components/FormDesigner.vue";
+import FormDesigner from "./components/formdesigner/FormDesigner.vue"
 // console.log(FormDesigner.name);
 let data = reactive({});
 

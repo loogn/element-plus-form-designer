@@ -1,11 +1,7 @@
-<script>
-
-export default {
-    name: 'FormRenderer',
-    props:{
-        name:String,
-    }
-}
+<script setup>
+defineProps({
+    name:String
+})
 </script>
 
 <template>

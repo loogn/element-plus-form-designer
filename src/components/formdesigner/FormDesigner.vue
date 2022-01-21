@@ -1,9 +1,3 @@
-<script>
-import { defineComponent } from 'vue';
-export default defineComponent({
-    name: 'FormDesigner'
-});
-</script>
 <script setup>
 import { ref, reactive, provide } from 'vue'
 import NameIcon from "./NameIcon.vue";

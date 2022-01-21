@@ -1,9 +1,3 @@
-<script>
-import { defineComponent } from 'vue';
-export default defineComponent({
-    name: 'FormViewer'
-});
-</script>
 <script setup>
 import { ref } from 'vue'
 import { types } from "./controls/controls";
@@ -32,6 +26,27 @@ defineProps({
 
 })
 
+let form = ref(null);
+//验证，回调传入是否验证成功
+function validate(callback) {
+    form.value.validate(callback);
+}
+function resetFields() {
+    form.value.resetFields();
+}
+function clearValidate(ps) {
+    form.value.clearValidate(ps);
+}
+function scrollToField(prop) {
+    form.value.scrollToField(prop)
+}
+
+defineExpose({
+    validate,
+    resetFields,
+    scrollToField,
+    clearValidate
+});
 
 </script>
 
@@ -59,7 +74,11 @@ defineProps({
                 :label="element.props.showLabel ? element.props.label : ' '"
                 :rules="element.rules"
             >
-                <component :is="types[element.type].Viewer" :control="element" :model="formModel" />
+                <component
+                    :is="types[element.type].Renderer"
+                    :control="element"
+                    :model="formModel"
+                />
             </el-form-item>
         </div>
     </el-form>
