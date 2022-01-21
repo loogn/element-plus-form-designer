@@ -1,8 +1,12 @@
 <script setup>
 import { reactive } from "vue";
 
-import FormDesigner from "./components/formdesigner/FormDesigner.vue"
-// console.log(FormDesigner.name);
+// import FormDesigner from "./components/formdesigner/FormDesigner.vue"
+
+import { FormDesigner } from '../dist/build.es.js';
+
+
+
 let data = reactive({});
 
 function showData() {
@@ -27,7 +31,6 @@ let uploadOptions = {
 </script>
 
 <template>
-  <!-- <el-button type="danger" class="absolute top-0 left-0 z-50" @click="showData">console</el-button> -->
   <div class="h-full">
     <FormDesigner :uploadOptions="uploadOptions" :formData="data"></FormDesigner>
   </div>

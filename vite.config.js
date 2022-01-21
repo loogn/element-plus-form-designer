@@ -9,14 +9,14 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/export.js'),
-      name: 'FormDesigner',
-      fileName: (format) => `formdesigner.${format}.js`
+      name: 'element-plus-form-designer',
+      fileName: (format) => `build.${format}.js`
     },
     rollupOptions: {
       external: ['vue'],
       output: {
         globals: {
-          vue:'Vue'
+          vue: 'Vue'
         }
       }
     }

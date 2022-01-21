@@ -1,5 +1,5 @@
 <script setup>
-import { inject, ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import { inject, ref, onMounted, onBeforeUnmount } from 'vue';
 import E from "wangeditor";
 import { ElMessage } from 'element-plus';
 let props = defineProps({

@@ -11,12 +11,12 @@
     "type": "git",
     "url": "https://gitee.com/loogn/element-plus-form-designer"
   },
-  "module": "./dist/formdesigner.es.js",
-  "main": "./dist/formdesigner.umd.js",
+  "module": "./dist/build.es.js",
+  "main": "./dist/build.umd.js",
   "exports": {
     ".": {
-      "import": "./dist/formdesigner.es.js",
-      "require": "./dist/formdesigner.umd.js"
+      "import": "./dist/build.es.js",
+      "require": "./dist/build.umd.js"
     },
     "./dist/style.css": {
       "import": "./dist/style.css",
