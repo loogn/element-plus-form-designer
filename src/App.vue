@@ -1,10 +1,13 @@
 <script setup>
 import { reactive } from "vue";
 
-// import FormDesigner from "./components/formdesigner/FormDesigner.vue"
+//开发测试方式
+import FormDesigner from "./components/formdesigner/FormDesigner.vue"
 
-import { FormDesigner } from '../dist/build.es.js';
 
+// 发布测试方式
+//import { FormDesigner } from '../dist/build.es.js';
+//import "../dist/style.css";
 
 
 let data = reactive({});

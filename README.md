@@ -1,12 +1,16 @@
 # element-plus-form-designer
 # 基于 vue3 和 element-plus 的表单设计器.
 
-包含两个组件 FormDesigner 和 FormRenderer.
-FormDesigner 组件用于设计表单，FormRenderer 组件用于呈现表单组件和获取表单提交数据。
+包含三个组件 FormDesigner、FormRenderer 和 FormViewer.
+FormDesigner 组件用于设计表单，FormRenderer 组件用于呈现表单组件和获取表单提交数据，FormViewer 组件查看数据。
 
 
+npm 安装方式终于好了，感谢 [咬轮猫](https://www.cnblogs.com/Hero-/p/15269982.html#5006739)
 
-注：npm中有```element-plus-form-designer``` 包，但是不能使用，还没研究好如何正确发布到 npm ，有点尴尬。
+```
+npm i element-plus-form-designer
+```
+
 
 ![预览][previewid]
 
@@ -15,7 +19,7 @@ FormDesigner 组件用于设计表单，FormRenderer 组件用于呈现表单组
 setup代码： 
 ```js
 import { reactive } from "vue";
-import FormDesigner from "../lib/components/FormDesigner.vue";
+import { FormDesigner } from "element-plus-form-designer";
 
 let data = reactive({});
 
@@ -117,7 +121,7 @@ uploadOptions说明：
 
 setup js代码
 ```js
-import FormRenderer from '../lib/components/FormRenderer.vue';
+import { FormRenderer } from 'element-plus-form-designer';
 import { reactive ,ref } from 'vue';
 let data = reactive({
     formData: {},
@@ -155,6 +159,9 @@ FormRenderer 公开的 el-form 的几个方法：
 
 具体参考 element-plus 官方文档： https://element-plus.gitee.io/zh-CN/component/form.html#form-%E6%96%B9%E6%B3%95
 
+## FormViewer 使用
+
+属性和 FormRenderer 相同。
 
 ## 联系
 

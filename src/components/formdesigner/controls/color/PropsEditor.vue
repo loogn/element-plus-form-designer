@@ -1,5 +1,5 @@
 <script setup>
-import draggable from 'vuedraggable';
+import draggable from 'vuedraggable/src/vuedraggable';
 import NameIcon from '../../NameIcon.vue';
 let props = defineProps({
     control: Object,

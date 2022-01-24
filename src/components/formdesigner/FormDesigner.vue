@@ -1,7 +1,7 @@
 <script setup>
 import { ref, reactive, provide } from 'vue'
 import NameIcon from "./NameIcon.vue";
-import draggable from 'vuedraggable';
+import draggable from 'vuedraggable/src/vuedraggable';
 import FormPropsEditor from './controls/FormPropsEditor.vue';
 import { groups, types } from "./controls/controls";
 import { randomWord } from "./utils";
