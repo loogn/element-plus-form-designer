@@ -20,7 +20,7 @@ setup代码：
 ```js
 import { reactive } from "vue";
 import { FormDesigner } from "element-plus-form-designer";
-
+import "element-plus-form-designer/dist/style.css";
 let data = reactive({});
 
 let uploadOptions = {
@@ -121,8 +121,10 @@ uploadOptions说明：
 
 setup js代码
 ```js
-import { FormRenderer } from 'element-plus-form-designer';
 import { reactive ,ref } from 'vue';
+import { FormRenderer } from 'element-plus-form-designer';
+import "element-plus-form-designer/dist/style.css";
+
 let data = reactive({
     formData: {},
     formModel: {}
