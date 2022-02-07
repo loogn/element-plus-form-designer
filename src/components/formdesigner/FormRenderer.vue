@@ -62,7 +62,7 @@ defineExpose({
         :status-icon="false"
     >
         <div
-            v-for="(element,index) in formData.controls"
+            v-for="(element, index) in formData.controls"
             :key="index"
             class="epdf-form-item-wrap"
             :style="{ 'width': (element.props.width * 100 / formData.props.cols) + '%' }"
@@ -87,5 +87,14 @@ defineExpose({
 <style lang="scss" scoped>
 .epdf-form-renderer {
     @apply flex flex-wrap overflow-y-auto content-start;
+}
+.epdf-form-item-wrap{
+    padding-right: 4px;
+}
+@media (max-width: 767px) {
+    .epdf-form-item-wrap {
+        width: 100% !important;
+        padding-right: 0px;
+    }
 }
 </style>

@@ -62,4 +62,9 @@ defineProps({
 .epdf-form-renderer {
     @apply flex flex-wrap overflow-y-auto content-start;
 }
+@media (max-width: 767px) {
+    .epdf-form-item-wrap {
+        width: 100% !important;
+    }
+}
 </style>
