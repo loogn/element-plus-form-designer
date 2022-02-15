@@ -1,5 +1,5 @@
 <script setup>
-import { types } from "./controls/controls";
+import types from "./controls/controls";
 
 //组件的属性
 defineProps({
@@ -40,7 +40,7 @@ defineProps({
         :status-icon="false"
     >
         <div
-            v-for="(element,index) in formData.controls"
+            v-for="(element, index) in formData.controls"
             :key="index"
             class="epdf-form-item-wrap"
             :style="{ 'width': (element.props.width * 100 / formData.props.cols) + '%' }"

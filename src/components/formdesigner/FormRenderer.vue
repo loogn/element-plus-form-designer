@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { types } from "./controls/controls";
+import  types from "./controls/controls";
 
 //组件的属性
 defineProps({

@@ -20,7 +20,7 @@ import editor from './editor';
 import region from './region';
 import cascader from './cascader';
 import table from './table';
-let types = {
+export default {
     input,
     textarea,
     inputnumber,
@@ -37,7 +37,7 @@ let types = {
     html,
     link,
     divider,
-
+    
     upload,
     uploadImage,
     editor,
@@ -45,43 +45,4 @@ let types = {
     cascader,
     table
 }
-
-let groups = [
-    {
-        name: '基础组件', types: [
-            input.Control,
-            textarea.Control,
-            inputnumber.Control,
-            select.Control,
-            radio.Control,
-            checkbox.Control,
-            rate.Control,
-            color.Control,
-            date.Control,
-            time.Control,
-            $switch.Control,
-            slider.Control,
-            text.Control,
-            html.Control,
-            link.Control,
-            divider.Control
-        ]
-    },
-
-    {
-        name: '高级组件', types: [
-            upload.Control,
-            uploadImage.Control,
-            region.Control,
-            cascader.Control,
-            editor.Control,
-            table.Control
-        ]
-    }
-];
-
-export {
-    groups,
-    types
-};
 

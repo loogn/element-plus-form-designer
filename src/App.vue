@@ -1,13 +1,13 @@
 <script setup>
 import { reactive } from "vue";
 
-//开发测试方式
-import FormDesigner from "./components/formdesigner/FormDesigner.vue"
+// //开发测试方式
+// import FormDesigner from "./components/formdesigner/FormDesigner.vue"
 
 
-// 发布测试方式
-//import { FormDesigner } from '../dist/build.es.js';
-//import "../dist/style.css";
+//发布测试方式
+import { FormDesigner } from '../dist/build.es.js';
+import "../dist/style.css";
 
 
 let data = reactive({});
@@ -31,11 +31,23 @@ let uploadOptions = {
     }
   }
 }
+
+let controlGroups = [
+  {
+    name: '基础组件11',
+    controls: ['input', 'textarea', 'inputnumber', 'select', 'radio', 'checkbox',
+      'rate', 'color', 'date', 'time', 'switch', 'slider', 'text', 'html', 'link', 'divider']
+  },
+  {
+    name: '高级组件12',
+    controls: ['upload', 'uploadImage', 'region', 'cascader', 'editor','table']
+  },
+];
 </script>
 
 <template>
   <div class="h-full">
-    <FormDesigner :uploadOptions="uploadOptions" :formData="data"></FormDesigner>
+    <FormDesigner :controlGroups="controlGroups" :uploadOptions="uploadOptions" :formData="data"></FormDesigner>
   </div>
 </template>
 

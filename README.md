@@ -22,7 +22,7 @@ import { reactive } from "vue";
 import { FormDesigner } from "element-plus-form-designer";
 import "element-plus-form-designer/dist/style.css";
 let data = reactive({});
-
+//上传配置
 let uploadOptions = {
   action: 'http://localhost/UploadFile',
   getHeaders: function () {
@@ -39,11 +39,23 @@ let uploadOptions = {
     }
   }
 }
+// 默认控件配置
+let controlGroups = [
+  {
+    name: '基础组件',
+    controls: ['input', 'textarea', 'inputnumber', 'select', 'radio', 'checkbox',
+      'rate', 'color', 'date', 'time', 'switch', 'slider', 'text', 'html', 'link', 'divider']
+  },
+  {
+    name: '高级组件',
+    controls: ['upload', 'uploadImage', 'region', 'cascader', 'editor','table']
+  },
+];
 ```
 模板代码：
 ```xml
 <div class="h-full w-full">
-    <FormDesigner :uploadOptions="uploadOptions" :formData="data"></FormDesigner>
+    <FormDesigner :controlGroups="controlGroups" :uploadOptions="uploadOptions" :formData="data"></FormDesigner>
 </div>
 ```
 

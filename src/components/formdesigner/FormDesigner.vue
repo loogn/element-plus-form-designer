@@ -3,7 +3,7 @@ import { ref, reactive, provide } from 'vue'
 import NameIcon from "./NameIcon.vue";
 import draggable from 'vuedraggable/src/vuedraggable';
 import FormPropsEditor from './controls/FormPropsEditor.vue';
-import { groups, types } from "./controls/controls";
+import  types  from "./controls/controls";
 import { randomWord } from "./utils";
 //组件的属性
 let props = defineProps({
@@ -18,8 +18,27 @@ let props = defineProps({
             getHeaders: () => ({}),
             getFileHook: (response, file) => ({ name: file, url: response.url })
         }
+    },
+    controlGroups: {
+        type: Array,
+        default: [
+            {
+                name: '基础组件',
+                controls: ['input', 'textarea', 'inputnumber', 'select', 'radio', 'checkbox',
+                    'rate', 'color', 'date', 'time', 'switch', 'slider', 'text', 'html', 'link', 'divider']
+            },
+            {
+                name: '高级组件',
+                controls: ['upload', 'uploadImage', 'region', 'cascader', 'editor', 'table']
+            },
+        ]
     }
 });
+//处理属性
+props.controlGroups.forEach(group => {
+    group.types = group.controls.map(key => types[key].Control);
+});
+
 provide('uploadOptions', props.uploadOptions);
 // UI所需数据
 let data = reactive({
@@ -259,7 +278,7 @@ defineExpose({
 
     <div class="epfd-container">
         <div class="epdf-left-board">
-            <div v-for="group in groups">
+            <div v-for="group in controlGroups">
                 <div class="epdf-com-title">
                     <el-icon>
                         <NameIcon name="component" />
