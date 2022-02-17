@@ -10,7 +10,7 @@ class Control extends BaseControl {
             width: 12,
             showLabel: true,
             labelWidth: undefined,
-            label: '单行文本',
+            label: '评分',
             defaultValue: 0,
             required: false,
             requiredMessage: '请打分',

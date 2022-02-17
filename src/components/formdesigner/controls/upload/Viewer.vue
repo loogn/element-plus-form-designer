@@ -1,5 +1,5 @@
 <script setup>
-let props= defineProps({
+let props = defineProps({
     control: Object,
     model: Object,
 })
@@ -20,11 +20,16 @@ let fileList = filesToList(props.model[props.control.id]);
 
 <template>
     <div class="filewraper">
-        <el-link v-for="item in fileList" type="primary" :href="item.url" target="_blank">{{ item.name }}</el-link>
+        <el-link
+            v-for="item in fileList"
+            type="primary"
+            :href="item.url"
+            target="_blank"
+        >{{ item.name }}</el-link>
     </div>
 </template>
 <style scoped lang="scss">
-.filewraper{
+.filewraper {
     @apply space-x-2;
 }
 </style>

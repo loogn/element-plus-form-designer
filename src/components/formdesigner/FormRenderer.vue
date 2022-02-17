@@ -1,9 +1,9 @@
 <script setup>
-import { ref } from 'vue'
-import  types from "./controls/controls";
+import { ref, provide } from 'vue'
+import types from "./controls/controls";
 
 //组件的属性
-defineProps({
+let props = defineProps({
     formData: {
         type: Object,
         default: {
@@ -18,6 +18,14 @@ defineProps({
         },
         required: true,
     },
+    uploadOptions: {
+        type: Object,
+        default: {
+            action: '',
+            getHeaders: () => ({}),
+            getFileHook: (response, file) => ({ name: file, url: response.url })
+        }
+    },
     formModel: {
         type: Object,
         default: {},
@@ -26,6 +34,7 @@ defineProps({
 
 })
 
+provide('uploadOptions', props.uploadOptions);
 let form = ref(null);
 //验证，回调传入是否验证成功
 function validate(callback) {
@@ -88,7 +97,7 @@ defineExpose({
 .epdf-form-renderer {
     @apply flex flex-wrap overflow-y-auto content-start;
 }
-.epdf-form-item-wrap{
+.epdf-form-item-wrap {
     padding-right: 4px;
 }
 @media (max-width: 767px) {
