@@ -69,7 +69,7 @@ function typeChange(value) {
             <el-select v-model="control.props.type" @change="typeChange">
                 <el-option value="date" label="日期"></el-option>
                 <el-option value="datetime" label="日期时间"></el-option>
-                <el-option value="week" label="周"></el-option>
+                <!-- <el-option value="week" label="周"></el-option> -->
                 <el-option value="month" label="月"></el-option>
                 <el-option value="year" label="年"></el-option>
             </el-select>
