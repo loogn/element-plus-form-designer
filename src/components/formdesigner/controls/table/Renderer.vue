@@ -1,6 +1,7 @@
 <script setup>
 import { ElMessage } from 'element-plus';
 import { reactive } from 'vue';
+import { randomWord, stringifyJson, parseJson } from "./../../utils";
 
 let props = defineProps({
     control: Object,
@@ -56,7 +57,7 @@ function copyRow(scp) {
     if (!canAdd()) {
         return;
     }
-    let row = JSON.parse(JSON.stringify(scp.row));
+    let row = parseJson(stringifyJson(scp.row));
     thisModel.push(row);
 }
 

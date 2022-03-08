@@ -3,8 +3,8 @@ import { ref, reactive, provide } from 'vue'
 import NameIcon from "./NameIcon.vue";
 import draggable from 'vuedraggable/src/vuedraggable';
 import FormPropsEditor from './controls/FormPropsEditor.vue';
-import  types  from "./controls/controls";
-import { randomWord } from "./utils";
+import types from "./controls/controls";
+import { randomWord, stringifyJson, parseJson } from "./utils";
 //组件的属性
 let props = defineProps({
     formData: {
@@ -84,7 +84,7 @@ function clone(ctlType) {
 }
 //复制控件
 function handleCopy(originControl) {
-    let control = JSON.parse(JSON.stringify(originControl));
+    let control = parseJson(stringifyJson(originControl));
     control.id = randomWord(false, 9);
     control.lock = false;
     props.formData.controls.push(control);
@@ -143,12 +143,7 @@ function viewFormJson() {
     formJsonVisible.value = true;
 }
 function getFormJson(format) {
-
-    if (format) {
-        return JSON.stringify(props.formData, null, 2);
-    } else {
-        return JSON.stringify(props.formData);
-    }
+    return stringifyJson(props.formData);
 }
 //#endregion
 
@@ -164,7 +159,7 @@ let previewData = reactive({
     formModel: {}
 })
 function previewFrom() {
-    previewData.formData = JSON.parse(JSON.stringify(props.formData));
+    previewData.formData = parseJson(stringifyJson(props.formData));
     let formModel = {};
     previewData.formData.controls.forEach(control => {
         if (control.props.defaultValue !== undefined)

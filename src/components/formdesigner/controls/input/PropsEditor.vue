@@ -22,6 +22,9 @@ function patternMessageChange(value) {
 
 <template>
     <el-form label-width="90px">
+        <el-form-item label="Id">
+            <el-input v-model="control.id" placeholder=""></el-input>
+        </el-form-item>
         <el-form-item label="标题">
             <el-input v-model="control.props.label" placeholder="请输入标题"></el-input>
         </el-form-item>
