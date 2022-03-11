@@ -28,7 +28,6 @@ function initRows(m) {
     }
 }
 let thisModel = props.model ? props.model[props.control.id] : data.list;
-console.log(thisModel);
 initRows(thisModel);
 
 function canAdd() {

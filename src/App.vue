@@ -1,5 +1,5 @@
 <script setup>
-import { reactive } from "vue";
+import { reactive,ref } from "vue";
 
 //开发测试方式
 import FormDesigner from "./components/formdesigner/FormDesigner.vue"
@@ -10,7 +10,54 @@ import FormDesigner from "./components/formdesigner/FormDesigner.vue"
 // import "../dist/style.css";
 
 
-let data = reactive({});
+let data = ref({});
+
+data.value={
+  "controls": [
+    {
+      "type": "textarea",
+      "name": "多行文本",
+      "key": "xNkeci7zl",
+      "id": "textarea_xNkeci7zl",
+      "lock": true,
+      "dataType": "string",
+      "props": {
+        "width": 12,
+        "showLabel": true,
+        "label": "多行文本",
+        "defaultValue": "",
+        "placeholder": "",
+        "required": false,
+        "requiredMessage": "必填字段",
+        "pattern": "",
+        "patternMessage": "格式不正确",
+        "disabled": false,
+        "readonly": false,
+        "showWordLimit": false,
+        "maxlength": 50,
+        "rows": 3,
+        "autosize": false,
+        "customClass": ""
+      },
+      "rules": [
+        {
+          "message": "必填字段",
+          "required": false
+        },
+        {
+          "message": "格式不正确"
+        }
+      ]
+    }
+  ],
+  "props": {
+    "labelPosition": "right",
+    "labelWidth": 100,
+    "size": "default",
+    "customClass": "",
+    "cols": 12
+  }
+}
 
 function showData() {
   console.log(data);
@@ -40,7 +87,7 @@ let controlGroups = [
   },
   {
     name: '高级组件12',
-    controls: ['upload', 'uploadImage', 'region', 'cascader', 'editor','table']
+    controls: ['upload', 'uploadImage', 'region', 'cascader', 'editor','table','tab']
   },
 ];
 </script>

@@ -1,8 +1,9 @@
 <script setup>
-import types from "./controls/controls";
+import { provide  } from 'vue'
+import ItemViewerGroup from './controls/ItemViewerGroup.vue'
 
 //组件的属性
-defineProps({
+let props = defineProps({
     formData: {
         type: Object,
         default: {
@@ -25,6 +26,7 @@ defineProps({
 
 })
 
+provide('formProps', props.formData.props);
 
 </script>
 
@@ -39,22 +41,7 @@ defineProps({
         :model="formModel"
         :status-icon="false"
     >
-        <div
-            v-for="(element, index) in formData.controls"
-            :key="index"
-            class="epdf-form-item-wrap"
-            :style="{ 'width': (element.props.width * 100 / formData.props.cols) + '%' }"
-        >
-            <el-form-item
-                :class="element.props.customClass"
-                :prop="element.id"
-                :label-width="element.props.showLabel ? (element.props.labelWidth || formData.props.labelWidth) : '0'"
-                :label="element.props.showLabel ? element.props.label : ' '"
-                :rules="element.rules"
-            >
-                <component :is="types[element.type].Viewer" :control="element" :model="formModel" />
-            </el-form-item>
-        </div>
+        <ItemViewerGroup :controls="formData.controls" :formModel="formModel"></ItemViewerGroup>
     </el-form>
 </template>
 
