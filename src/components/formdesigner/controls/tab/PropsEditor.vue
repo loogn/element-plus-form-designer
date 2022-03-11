@@ -1,4 +1,6 @@
 <script setup>
+import NameIcon from '../../NameIcon.vue'
+
 let props = defineProps({
     control: Object,
     formProps: Object,
@@ -34,10 +36,6 @@ const addSelectOption = (type) => {
 
 <template>
     <el-form label-width="90px">
-        <el-form-item label="标题">
-            <el-input v-model="control.props.label" placeholder="请输入标题"></el-input>
-        </el-form-item>
-
         <el-form-item label="宽度">
             <el-slider
                 class="w-11/12"
@@ -47,15 +45,15 @@ const addSelectOption = (type) => {
                 v-model="control.props.width"
             ></el-slider>
         </el-form-item>
-        <h3>标签配置项</h3>
-        <el-form-item v-for="(item, index) in props.control.props.columns" :key="item.label">
+        <el-form-item label="标签页">
+        <div v-for="(item, index) in props.control.props.columns" :key="item.label">
             <el-col :span="12">
                 <el-input placeholder="标签配置项" v-model="item.label"></el-input>
             </el-col>
             <el-col :span="2" :offset="1">
-                <i class="icon-del" @click="delSelectOption(index, 'tabs')"></i>
+                <el-icon><NameIcon name="delete" @click="delSelectOption(index, 'tabs')"/></el-icon>
             </el-col>
-        </el-form-item>
+        </div></el-form-item>
         <el-form-item>
             <el-button @click="addSelectOption('tabs')">增加标签</el-button>
         </el-form-item>
