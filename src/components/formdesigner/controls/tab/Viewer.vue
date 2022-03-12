@@ -8,7 +8,6 @@ defineProps({
 </script>
 
 <template>
-    <div>{{ model[control.id] }}</div>
     <el-tabs v-if="model">
         <el-tab-pane
             v-for="(item, index) in control.props.columns"

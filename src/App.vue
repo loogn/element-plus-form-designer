@@ -19,7 +19,7 @@ data.value={
       "name": "多行文本",
       "key": "xNkeci7zl",
       "id": "textarea_xNkeci7zl",
-      "lock": true,
+      "lock": false,
       "dataType": "string",
       "props": {
         "width": 12,

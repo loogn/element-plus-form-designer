@@ -48,11 +48,10 @@ function handleCopy(originControl) {
 }
 //拖动控件
 function onChange(evt) {
-    let control = (evt.added || evt.moved).element;
     if (evt.added) {
-        data.activeControl = control;
+        data.activeControl = evt.added.element;
     } else if (evt.moved) {
-        data.activeControl = control;
+        data.activeControl = evt.moved.element;
     }
 }
 //选中控件
