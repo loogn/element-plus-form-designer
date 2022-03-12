@@ -1,6 +1,7 @@
 <script setup>
 import { ref, provide } from 'vue'
 import types from "./controls/controls";
+import ItemRendererGroup from './controls/ItemRendererGroup.vue'
 
 //组件的属性
 let props = defineProps({
@@ -35,9 +36,13 @@ let props = defineProps({
 })
 
 provide('uploadOptions', props.uploadOptions);
+provide('formProps', props.formData.props);
+
 let form = ref(null);
 //验证，回调传入是否验证成功
 function validate(callback) {
+    console.log('props.formData:', props.formData)
+    console.log('props.formModel',props.formModel)
     form.value.validate(callback);
 }
 function resetFields() {
@@ -70,40 +75,12 @@ defineExpose({
         :model="formModel"
         :status-icon="false"
     >
-        <div
-            v-for="(element, index) in formData.controls"
-            :key="index"
-            class="epdf-form-item-wrap"
-            :style="{ 'width': (element.props.width * 100 / formData.props.cols) + '%' }"
-        >
-            <el-form-item
-                :class="element.props.customClass"
-                :prop="element.id"
-                :label-width="element.props.showLabel ? (element.props.labelWidth || formData.props.labelWidth) : '0'"
-                :label="element.props.showLabel ? element.props.label : ' '"
-                :rules="element.rules"
-            >
-                <component
-                    :is="types[element.type].Renderer"
-                    :control="element"
-                    :model="formModel"
-                />
-            </el-form-item>
-        </div>
+       <ItemRendererGroup :controls="formData.controls" :uploadOptions="uploadOptions" :formModel="formModel"></ItemRendererGroup>
     </el-form>
 </template>
 
 <style lang="scss" scoped>
 .epdf-form-renderer {
     @apply flex flex-wrap overflow-y-auto content-start;
-}
-.epdf-form-item-wrap {
-    padding-right: 4px;
-}
-@media (max-width: 767px) {
-    .epdf-form-item-wrap {
-        width: 100% !important;
-        padding-right: 0px;
-    }
 }
 </style>

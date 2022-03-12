@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { randomWord, stringifyJson, parseJson } from "././../../utils";
 let props = defineProps({
     control: Object,
     formProps: Object,
@@ -18,7 +19,7 @@ function requiredMessageChange(value) {
 let formJsonVisible = ref(false);
 let treeData = ref(null);
 function viewFormJson() {
-    treeData.value = JSON.parse(JSON.stringify(props.control.props.options));
+    treeData.value = parseJson(stringifyJson(props.control.props.options));
     formJsonVisible.value = true;
 }
 let id = 1;
@@ -44,7 +45,7 @@ function remove(node, data) {
 }
 function Sure() {
     try {
-        props.control.props.options = JSON.parse(JSON.stringify(treeData.value, ['value', 'children']));
+        props.control.props.options = JSparseJson(stringifyJson(treeData.value, ['value', 'children']));
         formJsonVisible.value = false;
     }
     catch (e) {

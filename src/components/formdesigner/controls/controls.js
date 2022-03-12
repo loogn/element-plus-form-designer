@@ -20,6 +20,8 @@ import editor from './editor';
 import region from './region';
 import cascader from './cascader';
 import table from './table';
+import tab from './tab';
+
 export default {
     input,
     textarea,
@@ -43,6 +45,7 @@ export default {
     editor,
     region,
     cascader,
-    table
+    table,
+    tab
 }
 

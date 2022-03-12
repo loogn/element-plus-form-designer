@@ -3,8 +3,10 @@ import { ref, reactive, provide } from 'vue'
 import NameIcon from "./NameIcon.vue";
 import draggable from 'vuedraggable/src/vuedraggable';
 import FormPropsEditor from './controls/FormPropsEditor.vue';
-import  types  from "./controls/controls";
-import { randomWord } from "./utils";
+import types from "./controls/controls";
+import { randomWord, stringifyJson, parseJson } from "./utils";
+import ItemRenderer from './controls/ItemDesignerGroup.vue'
+
 //组件的属性
 let props = defineProps({
     formData: {
@@ -46,7 +48,8 @@ let data = reactive({
     propTab: "control",
     device: "pc"
 });
-
+provide('data', data);
+provide('formProps', props.formData.props);
 
 let defaultFormProps = {
     labelPosition: "right",
@@ -82,34 +85,6 @@ function clone(ctlType) {
     var control = new ctlType();
     return control;
 }
-//复制控件
-function handleCopy(originControl) {
-    let control = JSON.parse(JSON.stringify(originControl));
-    control.id = randomWord(false, 9);
-    control.lock = false;
-    props.formData.controls.push(control);
-}
-//拖动控件
-function onChange(evt) {
-    // console.log('改变', evt);
-    let control = (evt.added || evt.moved).element;
-    if (evt.added) {
-        data.activeControl = control;
-    } else if (evt.moved) {
-        data.activeControl = control;
-    }
-}
-//选中控件
-function handleSelect(control) {
-    data.activeControl = control;
-}
-//删除控件
-function handleDelete(control, index) {
-    if (data.activeControl != null && control.id == data.activeControl.id) {
-        data.activeControl = null;
-    }
-    props.formData.controls.splice(index, 1);
-}
 
 //清空控件
 function clearControl() {
@@ -143,12 +118,7 @@ function viewFormJson() {
     formJsonVisible.value = true;
 }
 function getFormJson(format) {
-
-    if (format) {
-        return JSON.stringify(props.formData, null, 2);
-    } else {
-        return JSON.stringify(props.formData);
-    }
+    return stringifyJson(props.formData);
 }
 //#endregion
 
@@ -164,7 +134,7 @@ let previewData = reactive({
     formModel: {}
 })
 function previewFrom() {
-    previewData.formData = JSON.parse(JSON.stringify(props.formData));
+    previewData.formData = parseJson(stringifyJson(props.formData));
     let formModel = {};
     previewData.formData.controls.forEach(control => {
         if (control.props.defaultValue !== undefined)
@@ -365,47 +335,7 @@ defineExpose({
                     :status-icon="false"
                     :show-message="false"
                 >
-                    <draggable
-                        :list="formData.controls"
-                        item-key="id"
-                        class="epdf-form-draggable"
-                        @change="onChange"
-                        :sort="true"
-                        :group="{ name: 'com', pull: true, put: true }"
-                    >
-                        <template #item="{ element, index }">
-                            <div
-                                @click="handleSelect(element)"
-                                class="epdf-form-item-wrap"
-                                :class="{ 'is-selected': data.activeControl == element }"
-                                :style="{ 'width': (element.props.width * 100 / formData.props.cols) + '%' }"
-                            >
-                                <el-form-item
-                                    :class="element.props.customClass"
-                                    :prop="element.id"
-                                    :label-width="element.props.showLabel ? (element.props.labelWidth || formData.props.labelWidth) : '0'"
-                                    :label="element.props.showLabel ? element.props.label : ' '"
-                                    :rules="element.rules"
-                                >
-                                    <component
-                                        :is="types[element.type].Renderer"
-                                        :control="element"
-                                    />
-                                </el-form-item>
-                                <div class="opt">
-                                    <el-icon @click.stop="handleCopy(element)">
-                                        <NameIcon name="copy"></NameIcon>
-                                    </el-icon>
-                                    <el-icon
-                                        v-if="!element.lock"
-                                        @click.stop="handleDelete(element, index)"
-                                    >
-                                        <NameIcon name="delete"></NameIcon>
-                                    </el-icon>
-                                </div>
-                            </div>
-                        </template>
-                    </draggable>
+                    <ItemRenderer :controls="formData.controls" :uploadOptions="uploadOptions"></ItemRenderer>
                 </el-form>
             </div>
         </div>
