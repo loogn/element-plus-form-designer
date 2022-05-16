@@ -81,12 +81,12 @@ let uploadOptions = {
 
 let controlGroups = [
   {
-    name: '基础组件11',
+    name: '基础组件',
     controls: ['input', 'textarea', 'inputnumber', 'select', 'radio', 'checkbox',
       'rate', 'color', 'date', 'time', 'switch', 'slider', 'text', 'html', 'link', 'divider']
   },
   {
-    name: '高级组件12',
+    name: '高级组件',
     controls: ['upload', 'uploadImage', 'region', 'cascader', 'editor','table','tab']
   },
 ];

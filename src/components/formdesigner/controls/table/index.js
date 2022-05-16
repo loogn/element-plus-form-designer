@@ -12,7 +12,7 @@ class Control extends BaseControl {
             labelWidth: undefined,
             defaultValue: [],
             label: '表格',
-            columns: [{ name: '列1' }, { name: '列2' }, { name: '列3' }, { name: '列4' }, { name: '列5' }, { name: '列6' }, { name: '列7' }, { name: '列8' }],
+            columns: [{ name: '列1' }, { name: '列2' }, { name: '列3' }, { name: '列4' }, { name: '列5' }],
             addable: true,
             cloneable: true,
             deleteable: true,

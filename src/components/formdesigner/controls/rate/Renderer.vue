@@ -6,7 +6,7 @@ defineProps({
 </script>
 
 <template>
-    <el-rate
+    <el-rate  style="line-height:normal"
         v-if="model"
         v-model="model[control.id]"
         :disabled="control.props.disabled"
@@ -14,7 +14,7 @@ defineProps({
         :allow-half="control.props.allowHalf"
         :max="control.props.max"
     ></el-rate>
-    <el-rate
+    <el-rate style="line-height:normal"
         v-else
         v-model="control.props.defaultValue"
         :disabled="control.props.disabled"

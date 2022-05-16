@@ -88,25 +88,25 @@ function copyRow(scp) {
             v-if="control.props.cloneable || control.props.deleteable"
             label="操作"
             fixed="right"
-            width="120"
+            width="155"
         >
             <template #default="scope">
                 <el-button
                     v-if="control.props.cloneable"
                     :disabled="control.props.disabled"
                     @click="copyRow(scope)"
-                    type="text"
+                    text type="primary"
                 >复制</el-button>
                 <el-button
                     v-if="control.props.deleteable"
                     :disabled="control.props.disabled"
                     @click="delRow(scope)"
-                    type="text"
+                    text type="primary"
                 >删除</el-button>
             </template>
         </el-table-column>
     </el-table>
     <div v-if="control.props.addable">
-        <el-button type="text" :disabled="control.props.disabled" @click="addRow">添加</el-button>
+        <el-button text type="primary" :disabled="control.props.disabled" @click="addRow">添加</el-button>
     </div>
 </template>

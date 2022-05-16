@@ -6,7 +6,7 @@ defineProps({
 </script>
 
 <template>
-    <el-rate
+    <el-rate style="line-height:normal"
         v-model="model[control.id]"
         :disabled="true"
         :show-score="control.props.showScore"

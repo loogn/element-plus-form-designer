@@ -108,7 +108,7 @@ function removeOption(index) {
                     </div>
                 </template>
             </draggable>
-            <el-button type="text" @click="addOption">
+            <el-button text type="primary" @click="addOption">
                 <el-icon>
                     <NameIcon name="plus" />
                 </el-icon>添加

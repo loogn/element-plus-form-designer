@@ -75,13 +75,13 @@ function onOver(e) {
                         <span v-else>{{ node.data.value }}</span>
                     </span>
                     <span>
-                        <el-button type="text" @click="append(data)">添加</el-button>
-                        <el-button type="text" @click="remove(node, data)">删除</el-button>
+                        <el-button text type="primary" @click="append(data)">添加</el-button>
+                        <el-button text type="primary" @click="remove(node, data)">删除</el-button>
                     </span>
                 </span>
             </template>
         </el-tree>
-        <el-button type="text" @click="appendRoot">添加根节点</el-button>
+        <el-button text type="primary" @click="appendRoot">添加根节点</el-button>
         <template #footer>
             <span class="dialog-footer">
                 <el-button type="primary" @click="Sure">确定</el-button>

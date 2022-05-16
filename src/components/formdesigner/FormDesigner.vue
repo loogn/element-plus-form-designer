@@ -297,7 +297,7 @@ defineExpose({
                         @confirm="clearControl"
                     >
                         <template #reference>
-                            <el-button type="text" :disabled="formData.controls.length == 0">
+                            <el-button text type="primary" :disabled="formData.controls.length == 0">
                                 <el-icon>
                                     <NameIcon name="clear" />
                                 </el-icon>
@@ -305,14 +305,14 @@ defineExpose({
                             </el-button>
                         </template>
                     </el-popconfirm>
-                    <el-button type="text" @click="viewFormJson">
+                    <el-button text type="primary" @click="viewFormJson">
                         <el-icon>
                             <NameIcon name="json" />
                         </el-icon>
                         <span>查看JSON</span>
                     </el-button>
                     <el-button
-                        type="text"
+                        text type="primary"
                         @click="previewFrom"
                         :disabled="formData.controls.length == 0"
                     >

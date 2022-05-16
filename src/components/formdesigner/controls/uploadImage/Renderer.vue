@@ -116,8 +116,5 @@ function filesToList(files) {
         width: 100px;
         height: 100px;
     }
-    :deep(.el-upload--picture-card i) {
-        margin-top: 35px;
-    }
 }
 </style>
