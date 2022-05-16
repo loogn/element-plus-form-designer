@@ -3,7 +3,7 @@
   "description": "基于vue3和element-plus的表单设计器",
   "author": "lucky7 <loogn_0707@126.com>",
   "license": "MIT",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "files": [
     "dist"
   ],
